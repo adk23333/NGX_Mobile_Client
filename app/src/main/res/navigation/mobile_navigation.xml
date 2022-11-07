@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_dashboard">
+
+    <fragment
+        android:id="@+id/nav_dashboard"
+        android:name="com.akabc.ngxmobileclient.ui.dashboard.DashboardFragment"
+        android:label="@string/menu_dashboard"
+        tools:layout="@layout/fragment_dashboard" />
+
+    <fragment
+        android:id="@+id/nav_history"
+        android:name="com.akabc.ngxmobileclient.ui.smile.GalleryFragment"
+        android:label="@string/menu_history"
+        tools:layout="@layout/fragment_media" />
+
+    <fragment
+        android:id="@+id/nav_folder"
+        android:name="com.akabc.ngxmobileclient.ui.disk.SlideshowFragment"
+        android:label="@string/menu_folder"
+        tools:layout="@layout/fragment_disk" />
+
+    <fragment
+        android:id="@+id/nav_app"
+        android:name="com.akabc.ngxmobileclient.ui.app.AppFragment"
+        android:label="@string/menu_setting"
+        tools:layout="@layout/fragment_app" />
+</navigation>

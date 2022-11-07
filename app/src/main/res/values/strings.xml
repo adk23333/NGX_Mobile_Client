@@ -1,0 +1,35 @@
+
+<resources>
+    <string name="app_name">NGX Mobile Client</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">NGX File Cloud</string>
+    <string name="nav_header_subtitle">ngx.lfreedom.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- URLs -->
+    <string name="url" translatable="false">http://ngx.cn</string>
+    <string name="login_url" translatable="false">/api/v1/cloud/auth/signin</string>
+    <string name="captcha_id_url" translatable="false">/api/v1/cloud/auth/captcha/request</string>
+    <string name="captcha_url" translatable="false">/api/v1/cloud/auth/captcha/file/%1$s.png</string>
+    <string name="sys_info_url" translatable="false">/api/v1/cloud/version</string>
+    <string name="pc_info_url" translatable="false">/api/v1/cloud/app/hardware/host</string>
+    <string name="cpu_info_url" translatable="false">/api/v1/cloud/app/hardware/cpu</string>
+    <string name="mem_info_url" translatable="false">/api/v1/cloud/app/hardware/memory</string>
+
+    <string name="menu_history">History</string>
+    <string name="menu_folder">Disk</string>
+    <string name="menu_dashboard">Dashboard</string>
+    <string name="menu_setting">应用服务</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">User Name</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign In</string>
+    <string name="welcome">"Welcome!"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >6 characters</string>
+    <string name="login_failed">user name or password error</string>
+    <string name="invalid_ip">Invalid address or domain name</string>
+    <string name="invalid_port">Invalid port</string>
+</resources>

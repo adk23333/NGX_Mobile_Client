@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".ui.dashboard.DashboardFragment">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="0dp"
+        android:layout_height="152dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:cardBackgroundColor="@color/card_bg"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/tv_system_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:text="\?????"
+                android:textColor="@color/card_tv"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_cpu_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="\?????????? GHz"
+                android:textColor="@color/card_tv"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/tv_system_info"
+                app:layout_constraintTop_toBottomOf="@+id/tv_system_info" />
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@color/card_tv"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_cpu_info" />
+
+            <TextView
+                android:id="@+id/tv_ngx_info1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="ver.????????"
+                android:textColor="@color/card_tv"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/tv_cpu_info"
+                app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+            <TextView
+                android:id="@+id/tv_ngx_info2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="\????????"
+                android:textColor="@color/card_tv"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/tv_ngx_info1"
+                app:layout_constraintTop_toBottomOf="@+id/tv_ngx_info1" />
+
+            <TextView
+                android:id="@+id/tv_ngx_info3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="\???????????????"
+                android:textColor="@color/card_tv"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/tv_ngx_info2"
+                app:layout_constraintTop_toBottomOf="@+id/tv_ngx_info2" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="0dp"
+        android:layout_height="76dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        app:cardBackgroundColor="@color/card_bg"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ProgressBar
+                android:id="@+id/pgBar_cpu"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginStart="32dp"
+                android:background="@drawable/circular_shape"
+                android:indeterminate="false"
+                android:progressDrawable="@drawable/circular_progress_bar"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/progressBar4"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ProgressBar
+                android:id="@+id/progressBar4"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@drawable/circular_shape"
+                android:indeterminate="false"
+                android:progressDrawable="@drawable/circular_progress_bar"
+                app:layout_constraintEnd_toStartOf="@+id/progressBar5"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/pgBar_cpu"
+                app:layout_constraintTop_toTopOf="@+id/pgBar_cpu" />
+
+            <ProgressBar
+                android:id="@+id/progressBar5"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@drawable/circular_shape"
+                android:indeterminate="false"
+                android:progressDrawable="@drawable/circular_progress_bar"
+                app:layout_constraintEnd_toStartOf="@+id/progressBar6"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/progressBar4"
+                app:layout_constraintTop_toTopOf="@+id/progressBar4" />
+
+            <ProgressBar
+                android:id="@+id/progressBar6"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginEnd="32dp"
+                android:background="@drawable/circular_shape"
+                android:indeterminate="false"
+                android:progressDrawable="@drawable/circular_progress_bar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/progressBar5"
+                app:layout_constraintTop_toTopOf="@+id/progressBar5" />
+
+            <TextView
+                android:id="@+id/tv_cpu"
+                android:layout_width="35dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="cpu \n100%"
+                android:textAlignment="center"
+                android:textColor="@color/card_tv"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/pgBar_cpu"
+                app:layout_constraintEnd_toEndOf="@+id/pgBar_cpu"
+                app:layout_constraintStart_toStartOf="@+id/pgBar_cpu"
+                app:layout_constraintTop_toTopOf="@+id/pgBar_cpu" />
+
+            <TextView
+                android:id="@+id/tv_gpu"
+                android:layout_width="35dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="gpu \n100%"
+                android:textAlignment="center"
+                android:textColor="@color/card_tv"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/progressBar4"
+                app:layout_constraintEnd_toEndOf="@+id/progressBar4"
+                app:layout_constraintStart_toStartOf="@+id/progressBar4"
+                app:layout_constraintTop_toTopOf="@+id/progressBar4" />
+
+            <TextView
+                android:id="@+id/tv_mem"
+                android:layout_width="35dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:text="mem \n100%"
+                android:textAlignment="center"
+                android:textColor="@color/card_tv"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/progressBar5"
+                app:layout_constraintEnd_toEndOf="@+id/progressBar5"
+                app:layout_constraintStart_toStartOf="@+id/progressBar5"
+                app:layout_constraintTop_toTopOf="@+id/progressBar5" />
+
+            <TextView
+                android:id="@+id/tv_net"
+                android:layout_width="35dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="net \n100%"
+                android:textAlignment="center"
+                android:textColor="@color/card_tv"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/progressBar6"
+                app:layout_constraintEnd_toEndOf="@+id/progressBar6"
+                app:layout_constraintStart_toStartOf="@+id/progressBar6"
+                app:layout_constraintTop_toTopOf="@+id/progressBar6" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
