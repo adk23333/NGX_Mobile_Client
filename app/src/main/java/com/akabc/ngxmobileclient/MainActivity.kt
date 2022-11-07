@@ -46,6 +46,8 @@ class MainActivity : AppCompatActivity() {
             controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         }*/
         val sharedPref = this.getPreferences(Context.MODE_PRIVATE) ?: return
+
+        /**  获取本地存储的登录用户信息 **/
         getUser(sharedPref)
 
         binding.appBarMain.fab.setOnClickListener {

@@ -95,6 +95,7 @@ class LoginFragment : DialogFragment() {
                 loginResult.success?.let {
                     if (!isFirstShow){
                         updateUiWithUser(it)
+                        // TODO 向 Preferences存入登入用户的信息
                         this.dismiss()
                     }
                     isFirstShow = false
