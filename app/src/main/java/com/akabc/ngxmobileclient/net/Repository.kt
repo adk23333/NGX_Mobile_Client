@@ -11,13 +11,9 @@ import com.akabc.ngxmobileclient.R
 import com.akabc.ngxmobileclient.ui.dashboard.SystemInfo
 import com.akabc.ngxmobileclient.ui.login.data.Result
 import com.akabc.ngxmobileclient.ui.login.data.model.Captcha
-import com.akabc.ngxmobileclient.ui.login.data.model.LoggedInUser
+import com.akabc.ngxmobileclient.ui.login.data.model.User
 import java.time.Instant
 
-/**
- * Class that requests authentication and user information from the remote data source and
- * maintains an in-memory cache of login status and user credentials information.
- */
 
 class Repository {
     private val name = this.toString()
@@ -25,7 +21,7 @@ class Repository {
     private var systemInfo = SystemInfo()
 
     // in-memory cache of the loggedInUser object
-    var user = LoggedInUser()
+    var user = User()
 
     val isLoggedIn: Boolean
         get() = user.token != null
@@ -37,22 +33,14 @@ class Repository {
                 user.token?.let {
                     val temp = user.exceptionTime - Instant.now().epochSecond
                     if (temp in 0..299 && user.captcha.ctId != null && user.captcha.ctCode != null) {
-                        login(user.displayName,
-                            user.pwd,
-                            user.captcha.ctId!!,
-                            user.captcha.ctCode!!,
-                            user.ip,
-                            user.port,
+                        login(
+                            user,
                             activity,
                             mainViewModel)
                     }
                     if (temp < 0 && user.captcha.ctId != null && user.captcha.ctCode != null) {
-                        login(user.displayName,
-                            user.pwd,
-                            user.captcha.ctId!!,
-                            user.captcha.ctCode!!,
-                            user.ip,
-                            user.port,
+                        login(
+                            user,
                             activity,
                             mainViewModel)
                     }
@@ -67,25 +55,19 @@ class Repository {
         //login out
     }
 
-    // TODO 优化入参
     fun login(
-        username: String,
-        password: String,
-        captchaId: String,
-        captcha: String,
-        ip: String,
-        port: String,
+        loginUser: User,
         activity: Activity,
         mainViewModel: MainViewModel,
     ) {
         // handle login
-        val url = "http://$ip:$port${activity.getString(R.string.login_url)}"
-        val pwd = RequestKit().md5(password)
+        val url = "http://${loginUser.ip}:${loginUser.port}${activity.getString(R.string.login_url)}"
+        val pwd = RequestKit().md5(loginUser.pwd)
         val body = RequestKit().toJSONObject(
-            "UserName" to username,
+            "UserName" to loginUser.displayName,
             "Password" to pwd,
-            "CaptchaId" to captchaId,
-            "CaptchaCode" to captcha,
+            "CaptchaId" to loginUser.captcha.ctId,
+            "CaptchaCode" to loginUser.captcha.ctCode,
             "PasswordCipher" to "MD5"
         )
         val jsonObjectRequest = JsonObjectRequest(Request.Method.POST, url, body,
@@ -98,14 +80,14 @@ class Repository {
                     val uid = userData.getString("Id")
                     val expirationTime = data.getInt("ExpiresAt")
                     val fakeUser =
-                        LoggedInUser(uid,
-                            username,
+                        User(uid,
+                            loginUser.displayName,
                             token,
                             expirationTime,
                             pwd,
-                            Captcha(captchaId, captcha),
-                            ip,
-                            port)
+                            Captcha(loginUser.captcha.ctId, loginUser.captcha.ctCode),
+                            loginUser.ip,
+                            loginUser.port)
                     val result = Result.Success(fakeUser)
                     setLoggedInUser(result.data)
                     mainViewModel.setLoginResult(result)
@@ -161,7 +143,7 @@ class Repository {
         SingletonVolley.getInstance(activity).addToRequestQueue(captchaImageRequest)
     }
 
-    fun setLoggedInUser(loggedInUser: LoggedInUser) {
+    fun setLoggedInUser(loggedInUser: User) {
         this.user = loggedInUser
         // If user credentials will be cached in local storage, it is recommended it be encrypted
         // @see https://developer.android.com/training/articles/keystore

@@ -2,7 +2,6 @@ package com.akabc.ngxmobileclient
 
 import android.app.Activity
 import android.util.Log
-import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,7 +11,7 @@ import com.akabc.ngxmobileclient.ui.login.LoginFormState
 import com.akabc.ngxmobileclient.ui.login.LoginResult
 import com.akabc.ngxmobileclient.ui.login.data.Result
 import com.akabc.ngxmobileclient.ui.login.data.model.Captcha
-import com.akabc.ngxmobileclient.ui.login.data.model.LoggedInUser
+import com.akabc.ngxmobileclient.ui.login.data.model.User
 import java.lang.Exception
 import java.util.regex.Pattern
 
@@ -34,19 +33,16 @@ class MainViewModel(val repository: Repository) : ViewModel() {
     val loginResult: LiveData<LoginResult> = _loginResult
 
     fun login(
-        username: String,
-        password: String,
-        captchaId: String,
-        captcha: String,
-        ip: String,
-        port: String,
+        loginUser: User,
         activity: Activity,
     ) {
-        // can be launched in a separate asynchronous job
-        repository.login(username, password, captchaId, captcha, ip, port, activity, this)
+        repository.login(
+            loginUser,
+            activity,
+            this)
     }
 
-    fun setLoginResult(result: Result<LoggedInUser>) {
+    fun setLoginResult(result: Result<User>) {
         when (result) {
             is Result.Success -> {
                 _loginResult.value =
@@ -61,13 +57,13 @@ class MainViewModel(val repository: Repository) : ViewModel() {
         }
     }
 
-    fun setLoginResultForRecord(activity: Activity, user: LoggedInUser) {
+    fun setLoginResultForRecord(activity: Activity, user: User) {
         _loginResult.value = LoginResult(success = user)
         repository.setLoggedInUser(user)
         repository.checkLonginStatus(activity, this)
     }
 
-    fun setLoginResultIp(activity: Activity, user: LoggedInUser) {
+    fun setLoginResultIp(activity: Activity, user: User) {
         _loginResult.value = LoginResult(success = user)
     }
 

@@ -18,11 +18,11 @@ import androidx.navigation.ui.setupWithNavController
 import com.akabc.ngxmobileclient.databinding.ActivityMainBinding
 import com.akabc.ngxmobileclient.ui.login.LoginFragment
 import com.akabc.ngxmobileclient.ui.login.data.model.Captcha
-import com.akabc.ngxmobileclient.ui.login.data.model.LoggedInUser
+import com.akabc.ngxmobileclient.ui.login.data.model.User
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
-
+    private val name = this.localClassName
     private lateinit var appBarConfiguration: AppBarConfiguration
     private val mainViewModel: MainViewModel by viewModels {
         ViewModelFactory((application as NewApplication).repository)
@@ -116,7 +116,7 @@ class MainActivity : AppCompatActivity() {
             "ctCode",
             "ip","port")
         try {
-            val user = LoggedInUser(
+            val user = User(
                 sharedPref.getString(keys[0], "").toString(),
                 sharedPref.getString(keys[1], "").toString(),
                 sharedPref.getString(keys[2], "").toString(),
@@ -130,7 +130,7 @@ class MainActivity : AppCompatActivity() {
             )
             mainViewModel.setLoginResultForRecord(this, user)
         } catch (e: Exception) {
-
+            Log.d(name, e.toString())
         }
     }
 }
