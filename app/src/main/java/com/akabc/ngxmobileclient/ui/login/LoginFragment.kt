@@ -193,7 +193,6 @@ class LoginFragment : DialogFragment() {
 
     private fun updateUiWithUser(model: LoggedInUser) {
         val welcome = getString(R.string.welcome) + model.displayName
-        // TODO : initiate successful logged in experience
         val appContext = context?.applicationContext ?: return
         Toast.makeText(appContext, welcome, Toast.LENGTH_LONG).show()
     }

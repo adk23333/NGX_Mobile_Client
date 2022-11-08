@@ -126,39 +126,39 @@
                 android:indeterminate="false"
                 android:progressDrawable="@drawable/circular_progress_bar"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/progressBar4"
+                app:layout_constraintEnd_toStartOf="@+id/pgBar_gpu"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ProgressBar
-                android:id="@+id/progressBar4"
+                android:id="@+id/pgBar_gpu"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:background="@drawable/circular_shape"
                 android:indeterminate="false"
                 android:progressDrawable="@drawable/circular_progress_bar"
-                app:layout_constraintEnd_toStartOf="@+id/progressBar5"
+                app:layout_constraintEnd_toStartOf="@+id/pgBar_mem"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/pgBar_cpu"
                 app:layout_constraintTop_toTopOf="@+id/pgBar_cpu" />
 
             <ProgressBar
-                android:id="@+id/progressBar5"
+                android:id="@+id/pgBar_mem"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:background="@drawable/circular_shape"
                 android:indeterminate="false"
                 android:progressDrawable="@drawable/circular_progress_bar"
-                app:layout_constraintEnd_toStartOf="@+id/progressBar6"
+                app:layout_constraintEnd_toStartOf="@+id/pgBar_net"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/progressBar4"
-                app:layout_constraintTop_toTopOf="@+id/progressBar4" />
+                app:layout_constraintStart_toEndOf="@+id/pgBar_gpu"
+                app:layout_constraintTop_toTopOf="@+id/pgBar_gpu" />
 
             <ProgressBar
-                android:id="@+id/progressBar6"
+                android:id="@+id/pgBar_net"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
@@ -168,8 +168,8 @@
                 android:progressDrawable="@drawable/circular_progress_bar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/progressBar5"
-                app:layout_constraintTop_toTopOf="@+id/progressBar5" />
+                app:layout_constraintStart_toEndOf="@+id/pgBar_mem"
+                app:layout_constraintTop_toTopOf="@+id/pgBar_mem" />
 
             <TextView
                 android:id="@+id/tv_cpu"
@@ -194,10 +194,10 @@
                 android:textAlignment="center"
                 android:textColor="@color/card_tv"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/progressBar4"
-                app:layout_constraintEnd_toEndOf="@+id/progressBar4"
-                app:layout_constraintStart_toStartOf="@+id/progressBar4"
-                app:layout_constraintTop_toTopOf="@+id/progressBar4" />
+                app:layout_constraintBottom_toBottomOf="@+id/pgBar_gpu"
+                app:layout_constraintEnd_toEndOf="@+id/pgBar_gpu"
+                app:layout_constraintStart_toStartOf="@+id/pgBar_gpu"
+                app:layout_constraintTop_toTopOf="@+id/pgBar_gpu" />
 
             <TextView
                 android:id="@+id/tv_mem"
@@ -208,10 +208,10 @@
                 android:textAlignment="center"
                 android:textColor="@color/card_tv"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/progressBar5"
-                app:layout_constraintEnd_toEndOf="@+id/progressBar5"
-                app:layout_constraintStart_toStartOf="@+id/progressBar5"
-                app:layout_constraintTop_toTopOf="@+id/progressBar5" />
+                app:layout_constraintBottom_toBottomOf="@+id/pgBar_mem"
+                app:layout_constraintEnd_toEndOf="@+id/pgBar_mem"
+                app:layout_constraintStart_toStartOf="@+id/pgBar_mem"
+                app:layout_constraintTop_toTopOf="@+id/pgBar_mem" />
 
             <TextView
                 android:id="@+id/tv_net"
@@ -222,10 +222,10 @@
                 android:textAlignment="center"
                 android:textColor="@color/card_tv"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/progressBar6"
-                app:layout_constraintEnd_toEndOf="@+id/progressBar6"
-                app:layout_constraintStart_toStartOf="@+id/progressBar6"
-                app:layout_constraintTop_toTopOf="@+id/progressBar6" />
+                app:layout_constraintBottom_toBottomOf="@+id/pgBar_net"
+                app:layout_constraintEnd_toEndOf="@+id/pgBar_net"
+                app:layout_constraintStart_toStartOf="@+id/pgBar_net"
+                app:layout_constraintTop_toTopOf="@+id/pgBar_net" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
