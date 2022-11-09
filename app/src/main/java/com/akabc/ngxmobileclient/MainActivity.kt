@@ -22,7 +22,7 @@ import com.akabc.ngxmobileclient.ui.login.data.model.User
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
-    private val name = this.localClassName
+    private val name = this.toString()
     private lateinit var appBarConfiguration: AppBarConfiguration
     private val mainViewModel: MainViewModel by viewModels {
         ViewModelFactory((application as NewApplication).repository)
