@@ -65,7 +65,7 @@ class LoginFragment : DialogFragment() {
             ipEditText.setText(it.ip)
             portEditText.setText(it.port)
             usernameEditText.setText(it.displayName)
-            passwordEditText.setText(it.pwd)
+            // passwordEditText.setText(it.pwd)
         }
 
         mainViewModel.loginFormState.observe(viewLifecycleOwner,
