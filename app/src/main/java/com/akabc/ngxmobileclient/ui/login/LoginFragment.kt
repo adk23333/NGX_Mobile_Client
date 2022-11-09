@@ -60,10 +60,12 @@ class LoginFragment : DialogFragment() {
 
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        /** 设置为上次输入的ip地址 **/
+        /** 设置为上次输入的信息  **/
         mainViewModel.loginResult.value?.success?.let {
             ipEditText.setText(it.ip)
             portEditText.setText(it.port)
+            usernameEditText.setText(it.displayName)
+            passwordEditText.setText(it.pwd)
         }
 
         mainViewModel.loginFormState.observe(viewLifecycleOwner,
