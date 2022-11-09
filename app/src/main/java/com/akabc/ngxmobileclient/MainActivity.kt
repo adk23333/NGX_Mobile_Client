@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         }*/
         val sharedPref = this.getPreferences(Context.MODE_PRIVATE) ?: return
 
-        /**  获取本地存储的登录用户信息 **/
+        /**  获取本地存储的登录用户信息  **/
         getUser(sharedPref)
 
         binding.appBarMain.fab.setOnClickListener {
