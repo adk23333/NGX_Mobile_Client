@@ -78,6 +78,7 @@ class MainActivity : AppCompatActivity() {
             loginFragment.show(supportFragmentManager, "login")
         }
 
+        /** 保存登录用户信息 **/
         mainViewModel.loginResult.observe(this) { loginResult ->
             loginResult.success?.let {
                 with(sharedPref.edit()) {
@@ -88,6 +89,8 @@ class MainActivity : AppCompatActivity() {
                     putString("pwd", it.pwd)
                     putString("ctId", it.captcha.ctId)
                     putString("ctCode", it.captcha.ctCode)
+                    putString("ip", it.ip)
+                    putString("port", it.port)
                     apply()
                 }
             }
@@ -128,6 +131,7 @@ class MainActivity : AppCompatActivity() {
                 sharedPref.getString(keys[7],"").toString(),
                 sharedPref.getString(keys[8],"").toString(),
             )
+            Log.d(name, user.toString())
             mainViewModel.setLoginResultForRecord(this, user)
         } catch (e: Exception) {
             Log.d(name, e.toString())
