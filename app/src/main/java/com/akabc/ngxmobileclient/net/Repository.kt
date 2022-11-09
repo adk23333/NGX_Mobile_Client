@@ -150,7 +150,7 @@ class Repository {
     }
 
     fun getBaseSysInfo(activity: Activity, mainViewModel: MainViewModel) {
-        val url = activity.getString(R.string.url) + activity.getString(R.string.sys_info_url)
+        val url = "http://${user.ip}:${user.port}${activity.getString(R.string.sys_info_url)}"
         val jsonObjectRequest = object : JsonObjectRequest(Method.POST, url, null,
             { response ->
                 try {
@@ -188,7 +188,7 @@ class Repository {
     }
 
     private fun getBaseHardwareInfo(activity: Activity, mainViewModel: MainViewModel)    {
-        val url = activity.getString(R.string.url) + activity.getString(R.string.pc_info_url)
+        val url = "http://${user.ip}:${user.port}${activity.getString(R.string.pc_info_url)}"
         val jsonObjectRequest = object : JsonObjectRequest(Method.POST, url, null,
             { response ->
                 try {
@@ -221,7 +221,7 @@ class Repository {
 
     private fun getBaseCpuInfo(activity: Activity, mainViewModel: MainViewModel) {
         val url =
-            activity.getString(R.string.url) + activity.getString(R.string.cpu_info_url)
+            "http://${user.ip}:${user.port}${activity.getString(R.string.cpu_info_url)}"
         val jsonObjectRequest = object : JsonObjectRequest(Method.POST, url, null,
             { response ->
                 try {
@@ -251,7 +251,7 @@ class Repository {
     }
 
     private fun getMemInfo(activity: Activity, mainViewModel: MainViewModel) {
-        val url = activity.getString(R.string.url) + activity.getString(R.string.mem_info_url)
+        val url = "http://${user.ip}:${user.port}${activity.getString(R.string.mem_info_url)}"
         val jsonObjectRequest = object : JsonObjectRequest(Method.POST, url, null,
             { response ->
                 try {
