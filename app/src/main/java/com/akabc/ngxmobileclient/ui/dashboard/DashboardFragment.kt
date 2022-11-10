@@ -18,10 +18,12 @@ import kotlinx.coroutines.withContext
 import java.util.*
 import java.util.logging.Logger
 import kotlin.concurrent.schedule
+import kotlin.concurrent.timer
 
 class DashboardFragment : Fragment() {
     val name = this.tag
     private var _binding: FragmentDashboardBinding? = null
+    private val timer = Timer()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -63,7 +65,7 @@ class DashboardFragment : Fragment() {
 //        }
 
         val period: Long = 1000
-        Timer().schedule(500, period) {
+        timer.schedule(500, period) {
             mainViewModel.repository.getCpuUsageInfo(requireActivity(), mainViewModel)
         }
 
@@ -81,6 +83,7 @@ class DashboardFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        timer.cancel()
         _binding = null
     }
 }
