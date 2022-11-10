@@ -126,23 +126,10 @@
                 android:indeterminate="false"
                 android:progressDrawable="@drawable/circular_progress_bar"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/pgBar_gpu"
+                app:layout_constraintEnd_toStartOf="@+id/pgBar_mem"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <ProgressBar
-                android:id="@+id/pgBar_gpu"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:background="@drawable/circular_shape"
-                android:indeterminate="false"
-                android:progressDrawable="@drawable/circular_progress_bar"
-                app:layout_constraintEnd_toStartOf="@+id/pgBar_mem"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/pgBar_cpu"
-                app:layout_constraintTop_toTopOf="@+id/pgBar_cpu" />
 
             <ProgressBar
                 android:id="@+id/pgBar_mem"
@@ -152,10 +139,23 @@
                 android:background="@drawable/circular_shape"
                 android:indeterminate="false"
                 android:progressDrawable="@drawable/circular_progress_bar"
+                app:layout_constraintEnd_toStartOf="@+id/pgBar_disk"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/pgBar_cpu"
+                app:layout_constraintTop_toTopOf="@+id/pgBar_cpu" />
+
+            <ProgressBar
+                android:id="@+id/pgBar_disk"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@drawable/circular_shape"
+                android:indeterminate="false"
+                android:progressDrawable="@drawable/circular_progress_bar"
                 app:layout_constraintEnd_toStartOf="@+id/pgBar_net"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/pgBar_gpu"
-                app:layout_constraintTop_toTopOf="@+id/pgBar_gpu" />
+                app:layout_constraintStart_toEndOf="@+id/pgBar_mem"
+                app:layout_constraintTop_toTopOf="@+id/pgBar_mem" />
 
             <ProgressBar
                 android:id="@+id/pgBar_net"
@@ -168,12 +168,12 @@
                 android:progressDrawable="@drawable/circular_progress_bar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/pgBar_mem"
-                app:layout_constraintTop_toTopOf="@+id/pgBar_mem" />
+                app:layout_constraintStart_toEndOf="@+id/pgBar_disk"
+                app:layout_constraintTop_toTopOf="@+id/pgBar_disk" />
 
             <TextView
                 android:id="@+id/tv_cpu"
-                android:layout_width="35dp"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
                 android:text="cpu \n100%"
@@ -186,24 +186,10 @@
                 app:layout_constraintTop_toTopOf="@+id/pgBar_cpu" />
 
             <TextView
-                android:id="@+id/tv_gpu"
-                android:layout_width="35dp"
+                android:id="@+id/tv_mem"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
-                android:text="gpu \n100%"
-                android:textAlignment="center"
-                android:textColor="@color/card_tv"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/pgBar_gpu"
-                app:layout_constraintEnd_toEndOf="@+id/pgBar_gpu"
-                app:layout_constraintStart_toStartOf="@+id/pgBar_gpu"
-                app:layout_constraintTop_toTopOf="@+id/pgBar_gpu" />
-
-            <TextView
-                android:id="@+id/tv_mem"
-                android:layout_width="35dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="3dp"
                 android:text="mem \n100%"
                 android:textAlignment="center"
                 android:textColor="@color/card_tv"
@@ -214,8 +200,22 @@
                 app:layout_constraintTop_toTopOf="@+id/pgBar_mem" />
 
             <TextView
+                android:id="@+id/tv_disk"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:text="disk \n100%"
+                android:textAlignment="center"
+                android:textColor="@color/card_tv"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/pgBar_disk"
+                app:layout_constraintEnd_toEndOf="@+id/pgBar_disk"
+                app:layout_constraintStart_toStartOf="@+id/pgBar_disk"
+                app:layout_constraintTop_toTopOf="@+id/pgBar_disk" />
+
+            <TextView
                 android:id="@+id/tv_net"
-                android:layout_width="35dp"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"
                 android:text="net \n100%"

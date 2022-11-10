@@ -56,12 +56,8 @@ class MainActivity : AppCompatActivity() {
         }
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
-        val headerView =
-            navView.inflateHeaderView(R.layout.nav_header_main)
-        val navController =
-            findNavController(R.id.nav_host_fragment_content_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+        val headerView = navView.inflateHeaderView(R.layout.nav_header_main)
+        val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(setOf(
             R.id.nav_dashboard,
             R.id.nav_history,
@@ -73,7 +69,6 @@ class MainActivity : AppCompatActivity() {
         val headIv: ImageView =
             headerView.findViewById(R.id.imageView_head)
         headIv.setOnClickListener {
-            Log.d("test", "successful")
             val loginFragment = LoginFragment()
             loginFragment.show(supportFragmentManager, "login")
         }

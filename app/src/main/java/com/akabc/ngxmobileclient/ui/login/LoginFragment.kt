@@ -98,7 +98,6 @@ class LoginFragment : DialogFragment() {
                 loginResult.success?.let {
                     if (!isFirstShow){
                         updateUiWithUser(it)
-                        // TODO 向 Preferences存入登入用户的信息
                         this.dismiss()
                     }
                     isFirstShow = false
@@ -184,16 +183,6 @@ class LoginFragment : DialogFragment() {
             Log.d(name, "captchaImage click")
             mainViewModel.repository.getCaptcha(requireActivity(), mainViewModel)
         }
-
-//        checkIp.setOnCheckedChangeListener { _, isChecked ->
-//            if (isChecked) {
-//                //TODO
-//                val url = mainViewModel.loginResult.value?.success?.copy(ip = ip.text.toString(),
-//                    port = port.text.toString())
-//                url?.let { mainViewModel.setLoginResultIp(requireActivity(), it) }
-//                mainViewModel.repository.getCaptcha(requireActivity(), mainViewModel)
-//            }
-//        }
     }
 
     private fun updateUiWithUser(model: User) {

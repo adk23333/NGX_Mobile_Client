@@ -17,11 +17,13 @@
     <string name="pc_info_url" translatable="false">/api/v1/cloud/app/hardware/host</string>
     <string name="cpu_info_url" translatable="false">/api/v1/cloud/app/hardware/cpu</string>
     <string name="mem_info_url" translatable="false">/api/v1/cloud/app/hardware/memory</string>
+    <string name="cpu_usage_url" translatable="false">/api/v1/cloud/app/hardware/cpu/usage</string>
 
     <string name="menu_history">History</string>
     <string name="menu_folder">Disk</string>
     <string name="menu_dashboard">Dashboard</string>
     <string name="menu_setting">应用服务</string>
+
     <!-- Strings related to login -->
     <string name="prompt_email">User Name</string>
     <string name="prompt_password">Password</string>

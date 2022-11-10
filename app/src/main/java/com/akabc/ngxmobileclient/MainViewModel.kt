@@ -125,4 +125,13 @@ class MainViewModel(val repository: Repository) : ViewModel() {
     fun setSysBaseInfo(systemInfo: SystemInfo) {
         _sysBaseInfo.value = systemInfo
     }
+
+    /**
+     *  System usage info TODO
+     * **/
+    private val _cpUsage = MutableLiveData<List<Double>>()
+    val cpUsage: LiveData<List<Double>> = _cpUsage
+    fun setCpuUsage(cpUsage: List<Double>){
+        _cpUsage.value = cpUsage
+    }
 }

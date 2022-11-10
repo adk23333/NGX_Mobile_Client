@@ -61,7 +61,8 @@ class Repository {
         mainViewModel: MainViewModel,
     ) {
         // handle login
-        val url = "http://${loginUser.ip}:${loginUser.port}${activity.getString(R.string.login_url)}"
+        val url =
+            "http://${loginUser.ip}:${loginUser.port}${activity.getString(R.string.login_url)}"
         val pwd = RequestKit().md5(loginUser.pwd)
         val body = RequestKit().toJSONObject(
             "UserName" to loginUser.displayName,
@@ -110,7 +111,6 @@ class Repository {
 
     fun getCaptcha(activity: Activity, mainViewModel: MainViewModel) {
         // val queue = SingletonVolley.getInstance(requireActivity().applicationContext).requestQueue
-        // TODO
         val url1 =
             "http://${user.ip}:${user.port}${activity.getString(R.string.captcha_id_url)}"
         var captchaId: String
@@ -133,10 +133,13 @@ class Repository {
         activity: Activity,
         mainViewModel: MainViewModel,
     ) {
-        val url2 = "http://${user.ip}:${user.port}${String.format(activity.getString(R.string.captcha_url), captchaId)}"
+        val url2 = "http://${user.ip}:${user.port}${
+            String.format(activity.getString(R.string.captcha_url),
+                captchaId)
+        }"
         val captchaImageRequest = ImageRequest(url2, { bitmap ->
             mainViewModel.setCaptcha(Captcha(bitmap = bitmap))
-            Log.e("dd","hhh")
+            Log.e("dd", "hhh")
         }, 240, 80, Bitmap.Config.RGB_565, { error ->
             Log.e(name, error.toString())
         })
@@ -145,10 +148,12 @@ class Repository {
 
     fun setLoggedInUser(loggedInUser: User) {
         this.user = loggedInUser
-        // If user credentials will be cached in local storage, it is recommended it be encrypted
-        // @see https://developer.android.com/training/articles/keystore
     }
 
+
+    /**
+     * 向服务器请求系统信息
+     * **/
     fun getBaseSysInfo(activity: Activity, mainViewModel: MainViewModel) {
         val url = "http://${user.ip}:${user.port}${activity.getString(R.string.sys_info_url)}"
         val jsonObjectRequest = object : JsonObjectRequest(Method.POST, url, null,
@@ -187,7 +192,7 @@ class Repository {
 
     }
 
-    private fun getBaseHardwareInfo(activity: Activity, mainViewModel: MainViewModel)    {
+    private fun getBaseHardwareInfo(activity: Activity, mainViewModel: MainViewModel) {
         val url = "http://${user.ip}:${user.port}${activity.getString(R.string.pc_info_url)}"
         val jsonObjectRequest = object : JsonObjectRequest(Method.POST, url, null,
             { response ->
@@ -267,6 +272,49 @@ class Repository {
                         i++
                     }
                     mainViewModel.setSysBaseInfo(systemInfo)
+                } catch (e: Exception) {
+                    Log.w(name, e.toString())
+                }
+            },
+            { error ->
+                Log.d(name, error.toString())
+            }
+        ) {
+            override fun getHeaders(): MutableMap<String, String> {
+                mainViewModel.loginResult.value?.success?.let {
+                    return mutableMapOf("Authorization" to it.token!!)
+                }
+                return super.getHeaders()
+            }
+        }
+
+        SingletonVolley.getInstance(activity.applicationContext)
+            .addToRequestQueue(jsonObjectRequest)
+    }
+
+    /**
+     * 请求系统状态信息 TODO
+     * **/
+    fun getCpuUsageInfo(activity: Activity, mainViewModel: MainViewModel) {
+        val url = "http://${user.ip}:${user.port}${activity.getString(R.string.cpu_usage_url)}"
+        val body = RequestKit().toJSONObject(
+            "Offset" to 0,
+            "Limit" to 1000,
+            "Interval" to 0,
+            "Percpu" to true
+        )
+        val jsonObjectRequest = object : JsonObjectRequest(Method.POST, url, body,
+            { response ->
+                try {
+                    Log.d(name, response.toString())
+                    val data = response.getJSONArray("Data")
+                    val cpUsage = mutableListOf<Double>()
+                    for (i in 0 until data.length()) {
+                        Log.d(name,data.getDouble(i).toString())
+                        cpUsage.add(data.getDouble(i))
+                    }
+
+                    mainViewModel.setCpuUsage(cpUsage)
                 } catch (e: Exception) {
                     Log.w(name, e.toString())
                 }
