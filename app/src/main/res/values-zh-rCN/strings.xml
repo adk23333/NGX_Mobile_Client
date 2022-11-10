@@ -21,4 +21,8 @@
     <string name="login_failed">用户名或密码错误</string>
     <string name="invalid_ip">无效的地址或域名</string>
     <string name="invalid_port">无效端口</string>
+    <string name="cpu">CPU</string>
+    <string name="mem">内存</string>
+    <string name="disk">硬盘</string>
+    <string name="net">网络</string>
 </resources>

@@ -18,6 +18,7 @@
     <string name="cpu_info_url" translatable="false">/api/v1/cloud/app/hardware/cpu</string>
     <string name="mem_info_url" translatable="false">/api/v1/cloud/app/hardware/memory</string>
     <string name="cpu_usage_url" translatable="false">/api/v1/cloud/app/hardware/cpu/usage</string>
+    <string name="mem_usage_url" translatable="false">/api/v1/cloud/app/hardware/memory/usage</string>
 
     <string name="menu_history">History</string>
     <string name="menu_folder">Disk</string>
@@ -34,4 +35,10 @@
     <string name="login_failed">user name or password error</string>
     <string name="invalid_ip">Invalid address or domain name</string>
     <string name="invalid_port">Invalid port</string>
+
+    <!-- Dashboard -->
+    <string name="cpu">CPU</string>
+    <string name="mem">Mem</string>
+    <string name="disk">Disk</string>
+    <string name="net">Net</string>
 </resources>

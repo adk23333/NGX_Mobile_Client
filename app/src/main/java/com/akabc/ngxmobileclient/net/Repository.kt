@@ -9,6 +9,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.akabc.ngxmobileclient.MainViewModel
 import com.akabc.ngxmobileclient.R
 import com.akabc.ngxmobileclient.ui.dashboard.SystemInfo
+import com.akabc.ngxmobileclient.ui.dashboard.UsageInfo
 import com.akabc.ngxmobileclient.ui.login.data.Result
 import com.akabc.ngxmobileclient.ui.login.data.model.Captcha
 import com.akabc.ngxmobileclient.ui.login.data.model.User
@@ -171,7 +172,7 @@ class Repository {
                     systemInfo.forBoard = data.getString("ForBoard")
                     systemInfo.buildInfo = data.getString("BuildInfo")
                     systemInfo.buildTime = data.getString("BuildTime")
-                    mainViewModel.setSysBaseInfo(systemInfo)
+                    mainViewModel.sysBaseInfo(systemInfo)
                 } catch (e: Exception) {
                     Log.w(name, e.toString())
                 }
@@ -203,7 +204,7 @@ class Repository {
                     systemInfo.platform = info.getString("platform")
                     systemInfo.platformVersion = info.getString("platformVersion")
                     systemInfo.kernelArch = info.getString("kernelArch")
-                    mainViewModel.setSysBaseInfo(systemInfo)
+                    mainViewModel.sysBaseInfo(systemInfo)
                 } catch (e: Exception) {
                     Log.w(name, e.toString())
                 }
@@ -234,7 +235,7 @@ class Repository {
                     val data = response.getJSONArray("Data")
                     systemInfo.coreNum = data.length()
                     systemInfo.cpuName = data.getJSONObject(0).getString("modelName")
-                    mainViewModel.setSysBaseInfo(systemInfo)
+                    mainViewModel.sysBaseInfo(systemInfo)
                 } catch (e: Exception) {
                     Log.w(name, e.toString())
                 }
@@ -271,7 +272,7 @@ class Repository {
                         systemInfo.memSumSize += m.getLong("size")
                         i++
                     }
-                    mainViewModel.setSysBaseInfo(systemInfo)
+                    mainViewModel.sysBaseInfo(systemInfo)
                 } catch (e: Exception) {
                     Log.w(name, e.toString())
                 }
@@ -295,7 +296,12 @@ class Repository {
     /**
      * 请求系统状态信息 TODO
      * **/
-    fun getCpuUsageInfo(activity: Activity, mainViewModel: MainViewModel) {
+    fun getUsageInfo(activity: Activity, mainViewModel: MainViewModel){
+        getCpuUsageInfo(activity, mainViewModel)
+        getMemUsageInfo(activity, mainViewModel)
+    }
+
+    private fun getCpuUsageInfo(activity: Activity, mainViewModel: MainViewModel) {
         val url = "http://${user.ip}:${user.port}${activity.getString(R.string.cpu_usage_url)}"
         val body = RequestKit().toJSONObject(
             "Offset" to 0,
@@ -306,15 +312,49 @@ class Repository {
         val jsonObjectRequest = object : JsonObjectRequest(Method.POST, url, body,
             { response ->
                 try {
-                    Log.d(name, response.toString())
+                    // Log.d(name, response.toString())
                     val data = response.getJSONArray("Data")
                     val cpUsage = mutableListOf<Double>()
                     for (i in 0 until data.length()) {
-                        Log.d(name,data.getDouble(i).toString())
+                        Log.d(name, data.getDouble(i).toString())
                         cpUsage.add(data.getDouble(i))
                     }
+                    mainViewModel.usageInfo(UsageInfo(
+                        cpUsage,
+                        mainViewModel.usageInfo.value?.memUsageInfo
+                    ))
+                } catch (e: Exception) {
+                    Log.w(name, e.toString())
+                }
+            },
+            { error ->
+                Log.d(name, error.toString())
+            }
+        ) {
+            override fun getHeaders(): MutableMap<String, String> {
+                mainViewModel.loginResult.value?.success?.let {
+                    return mutableMapOf("Authorization" to it.token!!)
+                }
+                return super.getHeaders()
+            }
+        }
 
-                    mainViewModel.setCpuUsage(cpUsage)
+        SingletonVolley.getInstance(activity.applicationContext)
+            .addToRequestQueue(jsonObjectRequest)
+    }
+
+    private fun getMemUsageInfo(activity: Activity, mainViewModel: MainViewModel) {
+        val url = "http://${user.ip}:${user.port}${activity.getString(R.string.mem_usage_url)}"
+        val jsonObjectRequest = object : JsonObjectRequest(Method.POST, url, null,
+            { response ->
+                try {
+                    Log.d(name, response.toString())
+                    val data = response.getJSONObject("Data")
+                    val memUsage = data.getDouble("usedPercent")
+                    mainViewModel.usageInfo(UsageInfo(
+                        mainViewModel.usageInfo.value?.cpUsageInfo,
+                        memUsage,
+                    ))
                 } catch (e: Exception) {
                     Log.w(name, e.toString())
                 }

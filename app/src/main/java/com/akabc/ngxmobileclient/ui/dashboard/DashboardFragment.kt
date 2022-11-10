@@ -1,7 +1,6 @@
 package com.akabc.ngxmobileclient.ui.dashboard
 
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,14 +10,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.akabc.ngxmobileclient.MainViewModel
 import com.akabc.ngxmobileclient.databinding.FragmentDashboardBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.*
-import java.util.logging.Logger
 import kotlin.concurrent.schedule
-import kotlin.concurrent.timer
 
 class DashboardFragment : Fragment() {
     val name = this.tag
@@ -40,8 +33,10 @@ class DashboardFragment : Fragment() {
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
 
 
-        val pgBar = binding.pgBarCpu
+        val pgBarCpu = binding.pgBarCpu
+        val pgBarMem = binding.pgBarMem
         val tvCpu = binding.tvCpu
+        val tvMem = binding.tvMem
 
 
         mainViewModel.sysBaseInfo.observe(viewLifecycleOwner) {
@@ -50,23 +45,31 @@ class DashboardFragment : Fragment() {
         mainViewModel.loginResult.observe(viewLifecycleOwner){
             mainViewModel.repository.getBaseSysInfo(requireActivity(), mainViewModel)
         }
-        mainViewModel.cpUsage.observe(viewLifecycleOwner){ list ->
-            var sum: Double = 0.0
-            list.forEach{
+        mainViewModel.usageInfo.observe(viewLifecycleOwner){ usage ->
+            Log.d(name, usage.toString())
+
+            /** CPU **/
+            var sum = 0.0
+            usage.cpUsageInfo?.forEach{
                 sum += it
             }
-            Log.e(name, sum.toString())
             val cpUsage = sum / 4.0
-            pgBar.progress = cpUsage.toInt()
-            tvCpu.text = String.format("cpu \n%.1f%%", cpUsage)
+            pgBarCpu.progress = cpUsage.toInt()
+            tvCpu.text = String.format("%.1f%%", cpUsage)
+
+            /** Mem **/
+            usage.memUsageInfo?.let {
+                pgBarMem.progress = it.toInt()
+                tvMem.text = String.format("%.1f%%", it)
+            }
         }
 //        CoroutineScope(Dispatchers.IO).launch {
 //
 //        }
 
-        val period: Long = 1000
+        val period: Long = 500
         timer.schedule(500, period) {
-            mainViewModel.repository.getCpuUsageInfo(requireActivity(), mainViewModel)
+            mainViewModel.repository.getUsageInfo(requireActivity(), mainViewModel)
         }
 
         return binding.root

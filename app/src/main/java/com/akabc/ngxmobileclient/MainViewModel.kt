@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.akabc.ngxmobileclient.net.Repository
 import com.akabc.ngxmobileclient.ui.dashboard.SystemInfo
+import com.akabc.ngxmobileclient.ui.dashboard.UsageInfo
 import com.akabc.ngxmobileclient.ui.login.LoginFormState
 import com.akabc.ngxmobileclient.ui.login.LoginResult
 import com.akabc.ngxmobileclient.ui.login.data.Result
@@ -122,16 +123,16 @@ class MainViewModel(val repository: Repository) : ViewModel() {
 
     private val _sysBaseInfo = MutableLiveData<SystemInfo>()
     val sysBaseInfo: LiveData<SystemInfo> = _sysBaseInfo
-    fun setSysBaseInfo(systemInfo: SystemInfo) {
+    fun sysBaseInfo(systemInfo: SystemInfo) {
         _sysBaseInfo.value = systemInfo
     }
 
     /**
      *  System usage info TODO
      * **/
-    private val _cpUsage = MutableLiveData<List<Double>>()
-    val cpUsage: LiveData<List<Double>> = _cpUsage
-    fun setCpuUsage(cpUsage: List<Double>){
-        _cpUsage.value = cpUsage
+    private val _usageInfo = MutableLiveData<UsageInfo>()
+    val usageInfo: LiveData<UsageInfo> = _usageInfo
+    fun usageInfo(usageInfo: UsageInfo){
+        _usageInfo.value = usageInfo
     }
 }
