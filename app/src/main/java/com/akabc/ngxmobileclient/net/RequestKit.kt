@@ -49,7 +49,8 @@ class RequestKit {
         val tb = gb.shl(10)
 
         return when (data) {
-            in 0 until gb.shl(1) -> String.format("%.1fM", data.toDouble() / mb)
+            in 0 until mb.shl(2) -> String.format("%.1fk", data.toDouble() / kb)
+            in mb.shl(2) until gb.shl(1) -> String.format("%.1fM", data.toDouble() / mb)
             in gb.shr(1) until tb -> String.format("%.1fG", data.toDouble() / gb)
             else -> String.format("%.1fT", data.toDouble() / tb)
         }

@@ -10,6 +10,7 @@ import com.akabc.ngxmobileclient.MainViewModel
 import com.akabc.ngxmobileclient.R
 import com.akabc.ngxmobileclient.ui.dashboard.DiskUsageInfo
 import com.akabc.ngxmobileclient.ui.dashboard.MemUsageInfo
+import com.akabc.ngxmobileclient.ui.dashboard.NetUsageInfo
 import com.akabc.ngxmobileclient.ui.dashboard.SystemInfo
 import com.akabc.ngxmobileclient.ui.login.data.Result
 import com.akabc.ngxmobileclient.ui.login.data.model.Captcha
@@ -301,6 +302,7 @@ class Repository {
         getCpuUsageInfo(activity, mainViewModel)
         getMemUsageInfo(activity, mainViewModel)
         getDiskUsageInfo(activity, mainViewModel)
+        getNetUsageInfo(activity, mainViewModel)
     }
 
     private fun getCpuUsageInfo(activity: Activity, mainViewModel: MainViewModel) {
@@ -387,6 +389,55 @@ class Repository {
                         disks.add(DiskUsageInfo(disk.getLong("Used"), disk.getLong("Size")))
                     }
                     mainViewModel.usageInfo(mainViewModel.usageInfo.value!!.copy(diskUsageInfo = disks))
+                } catch (e: Exception) {
+                    Log.w(name, e.toString())
+                }
+            },
+            { error ->
+                Log.d(name, error.toString())
+            }
+        ) {
+            override fun getHeaders(): MutableMap<String, String> {
+                mainViewModel.loginResult.value?.success?.let {
+                    return mutableMapOf("Authorization" to it.token!!)
+                }
+                return super.getHeaders()
+            }
+        }
+
+        SingletonVolley.getInstance(activity.applicationContext)
+            .addToRequestQueue(jsonObjectRequest)
+    }
+
+    private fun getNetUsageInfo(activity: Activity, mainViewModel: MainViewModel) {
+        val url = "http://${user.ip}:${user.port}${activity.getString(R.string.net_usage_url)}"
+        val body = RequestKit().toJSONObject(
+            "Offset" to 0,
+            "Limit" to 1000,
+            "Pernic" to true
+        )
+        val jsonObjectRequest = object : JsonObjectRequest(Method.POST, url, body,
+            { response ->
+                try {
+                    Log.d(name, response.toString())
+                    val data = response.getJSONArray("Data")
+                    val time = response.getLong("Time")
+                    val nets = mutableListOf<NetUsageInfo>()
+                    for (i in 0 until data.length()) {
+                        val net = data.getJSONObject(i)
+                        val sent = net.getLong("bytesSent")
+                        val recv = net.getLong("bytesRecv")
+                        if (mainViewModel.usageInfo.value!!.netUsageInfo.size != data.length()) {
+                            nets.add(NetUsageInfo(sent, recv, 1, 1, 1, 1))
+                        } else {
+                            nets.add(NetUsageInfo(sent, recv,
+                                sent - mainViewModel.usageInfo.value!!.netUsageInfo[i].bytesSent,
+                                recv - mainViewModel.usageInfo.value!!.netUsageInfo[i].bytesRecv,
+                                time,
+                                time - mainViewModel.usageInfo.value!!.netUsageInfo[i].time))
+                        }
+                    }
+                    mainViewModel.usageInfo(mainViewModel.usageInfo.value!!.copy(netUsageInfo = nets))
                 } catch (e: Exception) {
                     Log.w(name, e.toString())
                 }

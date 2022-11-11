@@ -37,9 +37,13 @@ class DashboardFragment : Fragment() {
         val pgBarCpu = binding.pgBarCpu
         val pgBarMem = binding.pgBarMem
         val pgBarDisk = binding.pgBarDisk
+        val pgBarNet = binding.pgBarNet
+
         val tvCpu = binding.tvCpu
         val tvMem = binding.tvMem
         val tvDisk = binding.tvDisk
+        val tvNetDown = binding.tvNetDown
+        val tvNetUp = binding.tvNetUp
 
 
         mainViewModel.sysBaseInfo.observe(viewLifecycleOwner) {
@@ -62,11 +66,11 @@ class DashboardFragment : Fragment() {
                 tvCpu.text = String.format("%.1f%%", cpUsage)
             }
 
-
             /** Mem **/
             usage.memUsageInfo.let {
                 pgBarMem.progress = it.percent.toInt()
-                tvMem.text = String.format("%.1f%%\n%s", it.percent, RequestKit().memDataFormat(it.usedSize))
+                tvMem.text =
+                    String.format("%.1f%%\n%s", it.percent, RequestKit().memDataFormat(it.usedSize))
             }
 
             /** Disk **/
@@ -79,7 +83,23 @@ class DashboardFragment : Fragment() {
                 }
                 val pgUsage = ((used / sum.toDouble()) * 100)
                 pgBarDisk.progress = pgUsage.toInt()
-                tvDisk.text = String.format("%.1f%%\n%s", pgUsage, RequestKit().diskDataFormat(used))
+                tvDisk.text =
+                    String.format("%.1f%%\n%s", pgUsage, RequestKit().diskDataFormat(used))
+            }
+
+            /** Net **/
+            usage.netUsageInfo.let { list ->
+                var sentIncre: Long = 0
+                var recvIncre: Long = 0
+                var time: Long = 1000
+                for (i in list) {
+                    sentIncre += i.sentIncrement
+                    recvIncre += i.recvIncrement
+                    time = i.timeIncre
+                }
+                pgBarNet.progress = ((recvIncre.toDouble() / (recvIncre + sentIncre)) * 100).toInt()
+                tvNetDown.text = String.format("↓%s", RequestKit().memDataFormat(recvIncre))
+                tvNetUp.text = String.format("↑%s", RequestKit().memDataFormat(sentIncre))
             }
 
         }

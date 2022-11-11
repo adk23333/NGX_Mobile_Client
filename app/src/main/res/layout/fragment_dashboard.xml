@@ -163,9 +163,9 @@
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_marginEnd="32dp"
-                android:background="@drawable/circular_shape"
+                android:background="@drawable/circular_shape_net"
                 android:indeterminate="false"
-                android:progressDrawable="@drawable/circular_progress_bar"
+                android:progressDrawable="@drawable/circular_pg_bar_net"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/pgBar_disk"
@@ -173,12 +173,11 @@
 
             <TextView
                 android:id="@+id/tv_cpu"
-                android:layout_width="40dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0%"
                 android:textAlignment="center"
                 android:textColor="@color/card_tv"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/pgBar_cpu"
                 app:layout_constraintEnd_toEndOf="@+id/pgBar_cpu"
                 app:layout_constraintStart_toStartOf="@+id/pgBar_cpu"
@@ -186,12 +185,11 @@
 
             <TextView
                 android:id="@+id/tv_mem"
-                android:layout_width="50dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0%"
                 android:textAlignment="center"
                 android:textColor="@color/card_tv"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/pgBar_mem"
                 app:layout_constraintEnd_toEndOf="@+id/pgBar_mem"
                 app:layout_constraintStart_toStartOf="@+id/pgBar_mem"
@@ -199,29 +197,38 @@
 
             <TextView
                 android:id="@+id/tv_disk"
-                android:layout_width="40dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0%"
                 android:textAlignment="center"
                 android:textColor="@color/card_tv"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="@+id/pgBar_disk"
                 app:layout_constraintEnd_toEndOf="@+id/pgBar_disk"
                 app:layout_constraintStart_toStartOf="@+id/pgBar_disk"
                 app:layout_constraintTop_toTopOf="@+id/pgBar_disk" />
 
             <TextView
-                android:id="@+id/tv_net"
-                android:layout_width="40dp"
+                android:id="@+id/tv_net_down"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0%"
+                android:layout_marginTop="18dp"
+                android:text="↓0B"
                 android:textAlignment="center"
-                android:textColor="@color/card_tv"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/pgBar_net"
+                android:textColor="@color/net_down"
                 app:layout_constraintEnd_toEndOf="@+id/pgBar_net"
                 app:layout_constraintStart_toStartOf="@+id/pgBar_net"
                 app:layout_constraintTop_toTopOf="@+id/pgBar_net" />
+
+            <TextView
+                android:id="@+id/tv_net_up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="↑0B"
+                android:textAlignment="center"
+                android:textColor="@color/net_up"
+                app:layout_constraintEnd_toEndOf="@+id/pgBar_net"
+                app:layout_constraintStart_toStartOf="@+id/pgBar_net"
+                app:layout_constraintTop_toBottomOf="@+id/tv_net_down" />
 
             <TextView
                 android:id="@+id/tv_1"

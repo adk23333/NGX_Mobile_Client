@@ -18,4 +18,6 @@
     <color name="login_button_highlight">#494949</color>
     <color name="process_bar_start">#43A047</color>
     <color name="process_bar_end">#F44336</color>
+    <color name="net_down">@color/process_bar_start</color>
+    <color name="net_up">#FFEB3B</color>
 </resources>

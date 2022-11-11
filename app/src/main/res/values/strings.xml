@@ -20,6 +20,7 @@
     <string name="cpu_usage_url" translatable="false">/api/v1/cloud/app/hardware/cpu/usage</string>
     <string name="mem_usage_url" translatable="false">/api/v1/cloud/app/hardware/memory/usage</string>0
     <string name="disk_usage_url" translatable="false">/api/v1/cloud/app/browser/volumes</string>
+    <string name="net_usage_url" translatable="false">/api/v1/cloud/app/hardware/network/usage</string>
 
     <string name="menu_history">History</string>
     <string name="menu_folder">Disk</string>
