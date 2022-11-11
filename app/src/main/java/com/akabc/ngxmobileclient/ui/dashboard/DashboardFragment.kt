@@ -98,8 +98,10 @@ class DashboardFragment : Fragment() {
                     time = i.timeIncre
                 }
                 pgBarNet.progress = ((recvIncre.toDouble() / (recvIncre + sentIncre)) * 100).toInt()
-                tvNetDown.text = String.format("↓%s", RequestKit().memDataFormat(recvIncre))
-                tvNetUp.text = String.format("↑%s", RequestKit().memDataFormat(sentIncre))
+                tvNetDown.text = String.format("↓%s",
+                    RequestKit().memDataFormat((recvIncre.toDouble() / 0.5).toLong()))
+                tvNetUp.text =
+                    String.format("↑%s", RequestKit().memDataFormat((sentIncre / 0.5).toLong()))
             }
 
         }
