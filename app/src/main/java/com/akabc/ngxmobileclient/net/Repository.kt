@@ -8,8 +8,9 @@ import com.android.volley.toolbox.ImageRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.akabc.ngxmobileclient.MainViewModel
 import com.akabc.ngxmobileclient.R
+import com.akabc.ngxmobileclient.ui.dashboard.DiskUsageInfo
+import com.akabc.ngxmobileclient.ui.dashboard.MemUsageInfo
 import com.akabc.ngxmobileclient.ui.dashboard.SystemInfo
-import com.akabc.ngxmobileclient.ui.dashboard.UsageInfo
 import com.akabc.ngxmobileclient.ui.login.data.Result
 import com.akabc.ngxmobileclient.ui.login.data.model.Captcha
 import com.akabc.ngxmobileclient.ui.login.data.model.User
@@ -296,9 +297,10 @@ class Repository {
     /**
      * 请求系统状态信息 TODO
      * **/
-    fun getUsageInfo(activity: Activity, mainViewModel: MainViewModel){
+    fun getUsageInfo(activity: Activity, mainViewModel: MainViewModel) {
         getCpuUsageInfo(activity, mainViewModel)
         getMemUsageInfo(activity, mainViewModel)
+        getDiskUsageInfo(activity, mainViewModel)
     }
 
     private fun getCpuUsageInfo(activity: Activity, mainViewModel: MainViewModel) {
@@ -319,10 +321,7 @@ class Repository {
                         Log.d(name, data.getDouble(i).toString())
                         cpUsage.add(data.getDouble(i))
                     }
-                    mainViewModel.usageInfo(UsageInfo(
-                        cpUsage,
-                        mainViewModel.usageInfo.value?.memUsageInfo
-                    ))
+                    mainViewModel.usageInfo(mainViewModel.usageInfo.value!!.copy(cpUsageInfo = cpUsage))
                 } catch (e: Exception) {
                     Log.w(name, e.toString())
                 }
@@ -350,11 +349,44 @@ class Repository {
                 try {
                     Log.d(name, response.toString())
                     val data = response.getJSONObject("Data")
-                    val memUsage = data.getDouble("usedPercent")
-                    mainViewModel.usageInfo(UsageInfo(
-                        mainViewModel.usageInfo.value?.cpUsageInfo,
-                        memUsage,
-                    ))
+                    val memPercent = data.getDouble("usedPercent")
+                    val memUsed = data.getLong("used")
+                    mainViewModel.usageInfo(mainViewModel.usageInfo.value!!.copy(memUsageInfo = MemUsageInfo(
+                        memPercent,
+                        memUsed)))
+                } catch (e: Exception) {
+                    Log.w(name, e.toString())
+                }
+            },
+            { error ->
+                Log.d(name, error.toString())
+            }
+        ) {
+            override fun getHeaders(): MutableMap<String, String> {
+                mainViewModel.loginResult.value?.success?.let {
+                    return mutableMapOf("Authorization" to it.token!!)
+                }
+                return super.getHeaders()
+            }
+        }
+
+        SingletonVolley.getInstance(activity.applicationContext)
+            .addToRequestQueue(jsonObjectRequest)
+    }
+
+    private fun getDiskUsageInfo(activity: Activity, mainViewModel: MainViewModel) {
+        val url = "http://${user.ip}:${user.port}${activity.getString(R.string.disk_usage_url)}"
+        val jsonObjectRequest = object : JsonObjectRequest(Method.POST, url, null,
+            { response ->
+                try {
+                    Log.d(name, response.toString())
+                    val data = response.getJSONArray("Data")
+                    val disks = mutableListOf<DiskUsageInfo>()
+                    for (i in 0 until data.length()) {
+                        val disk = data.getJSONObject(i)
+                        disks.add(DiskUsageInfo(disk.getLong("Used"), disk.getLong("Size")))
+                    }
+                    mainViewModel.usageInfo(mainViewModel.usageInfo.value!!.copy(diskUsageInfo = disks))
                 } catch (e: Exception) {
                     Log.w(name, e.toString())
                 }

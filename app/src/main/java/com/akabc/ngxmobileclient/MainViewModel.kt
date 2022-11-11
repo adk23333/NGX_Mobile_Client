@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.akabc.ngxmobileclient.net.Repository
+import com.akabc.ngxmobileclient.ui.dashboard.DiskUsageInfo
 import com.akabc.ngxmobileclient.ui.dashboard.SystemInfo
 import com.akabc.ngxmobileclient.ui.dashboard.UsageInfo
 import com.akabc.ngxmobileclient.ui.login.LoginFormState
@@ -131,7 +132,9 @@ class MainViewModel(val repository: Repository) : ViewModel() {
      *  System usage info TODO
      * **/
     private val _usageInfo = MutableLiveData<UsageInfo>()
-    val usageInfo: LiveData<UsageInfo> = _usageInfo
+    val usageInfo: LiveData<UsageInfo> = _usageInfo.apply {
+        this.value = UsageInfo()
+    }
     fun usageInfo(usageInfo: UsageInfo){
         _usageInfo.value = usageInfo
     }

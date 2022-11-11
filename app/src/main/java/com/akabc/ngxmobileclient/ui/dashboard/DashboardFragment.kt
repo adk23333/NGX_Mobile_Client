@@ -10,6 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.akabc.ngxmobileclient.MainViewModel
 import com.akabc.ngxmobileclient.databinding.FragmentDashboardBinding
+import com.akabc.ngxmobileclient.net.RequestKit
 import java.util.*
 import kotlin.concurrent.schedule
 
@@ -35,33 +36,52 @@ class DashboardFragment : Fragment() {
 
         val pgBarCpu = binding.pgBarCpu
         val pgBarMem = binding.pgBarMem
+        val pgBarDisk = binding.pgBarDisk
         val tvCpu = binding.tvCpu
         val tvMem = binding.tvMem
+        val tvDisk = binding.tvDisk
 
 
         mainViewModel.sysBaseInfo.observe(viewLifecycleOwner) {
             refSysBaseInfo(it)
         }
-        mainViewModel.loginResult.observe(viewLifecycleOwner){
+        mainViewModel.loginResult.observe(viewLifecycleOwner) {
             mainViewModel.repository.getBaseSysInfo(requireActivity(), mainViewModel)
         }
-        mainViewModel.usageInfo.observe(viewLifecycleOwner){ usage ->
+        mainViewModel.usageInfo.observe(viewLifecycleOwner) { usage ->
             Log.d(name, usage.toString())
 
             /** CPU **/
-            var sum = 0.0
-            usage.cpUsageInfo?.forEach{
-                sum += it
+            usage.cpUsageInfo.let { list ->
+                var sum = 0.0
+                list.forEach {
+                    sum += it
+                }
+                val cpUsage = sum / 4.0
+                pgBarCpu.progress = cpUsage.toInt()
+                tvCpu.text = String.format("%.1f%%", cpUsage)
             }
-            val cpUsage = sum / 4.0
-            pgBarCpu.progress = cpUsage.toInt()
-            tvCpu.text = String.format("%.1f%%", cpUsage)
+
 
             /** Mem **/
-            usage.memUsageInfo?.let {
-                pgBarMem.progress = it.toInt()
-                tvMem.text = String.format("%.1f%%", it)
+            usage.memUsageInfo.let {
+                pgBarMem.progress = it.percent.toInt()
+                tvMem.text = String.format("%.1f%%\n%s", it.percent, RequestKit().memDataFormat(it.usedSize))
             }
+
+            /** Disk **/
+            usage.diskUsageInfo.let { list ->
+                var used: Long = 0
+                var sum: Long = 1
+                for (i in list) {
+                    used += i.usedSize
+                    sum += i.size
+                }
+                val pgUsage = ((used / sum.toDouble()) * 100)
+                pgBarDisk.progress = pgUsage.toInt()
+                tvDisk.text = String.format("%.1f%%\n%s", pgUsage, RequestKit().diskDataFormat(used))
+            }
+
         }
 //        CoroutineScope(Dispatchers.IO).launch {
 //
@@ -75,7 +95,7 @@ class DashboardFragment : Fragment() {
         return binding.root
     }
 
-    private fun refSysBaseInfo(it: SystemInfo){
+    private fun refSysBaseInfo(it: SystemInfo) {
         binding.tvSystemInfo.text = "${it.platform} ${it.platformVersion} ${it.kernelArch}"
         binding.tvCpuInfo.text = "${it.coreNum}h ${it.memSumSize.ushr(30)}g ${it.cpuName}"
         binding.tvNgxInfo1.text =
