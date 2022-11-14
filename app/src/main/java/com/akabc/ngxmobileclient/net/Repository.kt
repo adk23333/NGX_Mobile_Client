@@ -92,6 +92,7 @@ class Repository {
                     val userData = data.getJSONObject("UserData")
                     val uid = userData.getString("Id")
                     val expirationTime = data.getInt("ExpiresAt")
+
                     val fakeUser =
                         User(uid,
                             loginUser.displayName,
