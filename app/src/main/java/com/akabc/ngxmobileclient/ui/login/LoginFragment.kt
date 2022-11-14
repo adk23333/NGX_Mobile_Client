@@ -164,7 +164,7 @@ class LoginFragment : DialogFragment() {
 
         loginButton.setOnClickListener {
             Log.d(name, "button click")
-            mainViewModel.repository.user.captcha.ctId?.let { it2 ->
+            mainViewModel.captcha.value?.ctId.let { it2 ->
                 loadingProgressBar.visibility = View.VISIBLE
                 val loginUser = User(
                     displayName = usernameEditText.text.toString(),

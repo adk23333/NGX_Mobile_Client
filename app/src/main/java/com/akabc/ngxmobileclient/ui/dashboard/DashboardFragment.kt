@@ -99,9 +99,9 @@ class DashboardFragment : Fragment() {
                 }
                 pgBarNet.progress = ((recvIncre.toDouble() / (recvIncre + sentIncre)) * 100).toInt()
                 tvNetDown.text = String.format("↓%s",
-                    RequestKit().memDataFormat((recvIncre.toDouble() / 0.5).toLong()))
+                    RequestKit().memDataFormat(recvIncre))
                 tvNetUp.text =
-                    String.format("↑%s", RequestKit().memDataFormat((sentIncre / 0.5).toLong()))
+                    String.format("↑%s", RequestKit().memDataFormat(sentIncre))
             }
 
         }
@@ -109,7 +109,7 @@ class DashboardFragment : Fragment() {
 //
 //        }
 
-        val period: Long = 500
+        val period: Long = 1000
         timer.schedule(500, period) {
             mainViewModel.repository.getUsageInfo(requireActivity(), mainViewModel)
         }

@@ -39,13 +39,15 @@ class Repository {
                         login(
                             user,
                             activity,
-                            mainViewModel)
+                            mainViewModel,
+                            true)
                     }
                     if (temp < 0 && user.captcha.ctId != null && user.captcha.ctCode != null) {
                         login(
                             user,
                             activity,
-                            mainViewModel)
+                            mainViewModel,
+                            true)
                     }
                 }
                 Thread.sleep(500)
@@ -62,11 +64,17 @@ class Repository {
         loginUser: User,
         activity: Activity,
         mainViewModel: MainViewModel,
+        isCheckLogin: Boolean,
     ) {
         // handle login
         val url =
             "http://${loginUser.ip}:${loginUser.port}${activity.getString(R.string.login_url)}"
-        val pwd = RequestKit().md5(loginUser.pwd)
+        val pwd = if (isCheckLogin){
+            loginUser.pwd
+        }else{
+            RequestKit().md5(loginUser.pwd)
+        }
+
         val body = RequestKit().toJSONObject(
             "UserName" to loginUser.displayName,
             "Password" to pwd,
@@ -74,6 +82,7 @@ class Repository {
             "CaptchaCode" to loginUser.captcha.ctCode,
             "PasswordCipher" to "MD5"
         )
+        Log.e(name, body.toString())
         val jsonObjectRequest = JsonObjectRequest(Request.Method.POST, url, body,
             { response ->
                 Log.d(name, response.toString())
@@ -121,7 +130,7 @@ class Repository {
             { response ->
                 Log.d(name, response.toString())
                 captchaId = response.getJSONObject("Data").getString("CaptchaId")
-                mainViewModel.setCaptcha(Captcha(captchaId))
+                mainViewModel.setCaptcha(mainViewModel.captcha.value!!.copy(ctId = captchaId))
                 getCaptchaImage(captchaId, activity, mainViewModel)
             },
             { error ->
@@ -141,8 +150,7 @@ class Repository {
                 captchaId)
         }"
         val captchaImageRequest = ImageRequest(url2, { bitmap ->
-            mainViewModel.setCaptcha(Captcha(bitmap = bitmap))
-            Log.e("dd", "hhh")
+            mainViewModel.setCaptcha(mainViewModel.captcha.value!!.copy(bitmap = bitmap))
         }, 240, 80, Bitmap.Config.RGB_565, { error ->
             Log.e(name, error.toString())
         })

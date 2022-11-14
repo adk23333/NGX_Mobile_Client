@@ -41,7 +41,8 @@ class MainViewModel(val repository: Repository) : ViewModel() {
         repository.login(
             loginUser,
             activity,
-            this)
+            this,
+            false)
     }
 
     fun setLoginResult(result: Result<User>) {
@@ -70,9 +71,7 @@ class MainViewModel(val repository: Repository) : ViewModel() {
     }
 
     fun setCaptcha(captcha: Captcha) {
-        captcha.ctId?.let { _captcha.value = Captcha(captcha.ctId, this.captcha.value?.ctCode, this.captcha.value?.bitmap) }
-        captcha.ctCode?.let { _captcha.value = Captcha(this.captcha.value?.ctId, captcha.ctCode, this.captcha.value?.bitmap) }
-        captcha.bitmap?.let { _captcha.value = Captcha(this.captcha.value?.ctId, this.captcha.value?.ctCode, captcha.bitmap) }
+        _captcha.value = captcha
         Log.d(name, captcha.toString())
     }
 
