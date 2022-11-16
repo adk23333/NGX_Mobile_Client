@@ -36,6 +36,7 @@ class Repository {
                 user.token?.let {
                     val temp = user.exceptionTime - Instant.now().epochSecond
                     if (temp in 0..299 && user.captcha.ctId != null && user.captcha.ctCode != null) {
+                        //TODO 刷新令牌
                         login(
                             user,
                             activity,
@@ -43,11 +44,7 @@ class Repository {
                             true)
                     }
                     if (temp < 0 && user.captcha.ctId != null && user.captcha.ctCode != null) {
-                        login(
-                            user,
-                            activity,
-                            mainViewModel,
-                            true)
+                        logout()
                     }
                 }
                 Thread.sleep(500)
@@ -305,7 +302,7 @@ class Repository {
     }
 
     /**
-     * 请求系统状态信息 TODO
+     * 请求系统状态信息
      * **/
     fun getUsageInfo(activity: Activity, mainViewModel: MainViewModel) {
         getCpuUsageInfo(activity, mainViewModel)
