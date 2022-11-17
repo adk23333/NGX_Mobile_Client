@@ -52,7 +52,7 @@ class DashboardFragment : Fragment() {
             refSysBaseInfo(it)
         }
         mainViewModel.loginResult.observe(viewLifecycleOwner) {
-            mainViewModel.repository.getBaseSysInfo(requireActivity(), mainViewModel)
+            mainViewModel.repository.getSysInfo(requireActivity(), mainViewModel)
         }
         mainViewModel.usageInfo.observe(viewLifecycleOwner) { usage ->
             Log.d(name, usage.toString())

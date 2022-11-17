@@ -122,7 +122,9 @@ class MainViewModel(val repository: Repository) : ViewModel() {
      * **/
 
     private val _sysBaseInfo = MutableLiveData<SystemInfo>()
-    val sysBaseInfo: LiveData<SystemInfo> = _sysBaseInfo
+    val sysBaseInfo: LiveData<SystemInfo> = _sysBaseInfo.apply {
+        this.value = SystemInfo()
+    }
     fun sysBaseInfo(systemInfo: SystemInfo) {
         _sysBaseInfo.value = systemInfo
     }
