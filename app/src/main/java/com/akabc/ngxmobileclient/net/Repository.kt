@@ -8,6 +8,7 @@ import com.android.volley.toolbox.ImageRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.akabc.ngxmobileclient.MainViewModel
 import com.akabc.ngxmobileclient.R
+import com.akabc.ngxmobileclient.net.systemstatus.CpuUsageInfo
 import com.akabc.ngxmobileclient.ui.dashboard.DiskUsageInfo
 import com.akabc.ngxmobileclient.ui.dashboard.MemUsageInfo
 import com.akabc.ngxmobileclient.ui.dashboard.NetUsageInfo
@@ -312,43 +313,10 @@ class Repository {
     }
 
     private fun getCpuUsageInfo(activity: Activity, mainViewModel: MainViewModel) {
-        val url = "http://${user.ip}:${user.port}${activity.getString(R.string.cpu_usage_url)}"
-        val body = RequestKit().toJSONObject(
-            "Offset" to 0,
-            "Limit" to 1000,
-            "Interval" to 0,
-            "Percpu" to true
-        )
-
-        val jsonObjectRequest = object : JsonObjectRequest(Method.POST, url, body,
-            { response ->
-                try {
-                    // Log.d(name, response.toString())
-                    val data = response.getJSONArray("Data")
-                    val cpUsage = mutableListOf<Double>()
-                    for (i in 0 until data.length()) {
-                        Log.d(name, data.getDouble(i).toString())
-                        cpUsage.add(data.getDouble(i))
-                    }
-                    mainViewModel.usageInfo(mainViewModel.usageInfo.value!!.copy(cpUsageInfo = cpUsage))
-                } catch (e: Exception) {
-                    Log.w(name, e.toString())
-                }
-            },
-            { error ->
-                Log.d(name, error.toString())
-            }
-        ) {
-            override fun getHeaders(): MutableMap<String, String> {
-                mainViewModel.loginResult.value?.success?.let {
-                    return mutableMapOf("Authorization" to it.token!!)
-                }
-                return super.getHeaders()
-            }
+        CpuUsageInfo().let {
+            it.url("http://${user.ip}:${user.port}${activity.getString(R.string.cpu_usage_url)}")
+            it.get(activity, mainViewModel)
         }
-
-        SingletonVolley.getInstance(activity.applicationContext)
-            .addToRequestQueue(jsonObjectRequest)
     }
 
     private fun getMemUsageInfo(activity: Activity, mainViewModel: MainViewModel) {

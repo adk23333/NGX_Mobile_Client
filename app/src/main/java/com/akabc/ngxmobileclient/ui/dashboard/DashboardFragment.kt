@@ -1,5 +1,6 @@
 package com.akabc.ngxmobileclient.ui.dashboard
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.akabc.ngxmobileclient.MainViewModel
+import com.akabc.ngxmobileclient.R
 import com.akabc.ngxmobileclient.databinding.FragmentDashboardBinding
 import com.akabc.ngxmobileclient.net.RequestKit
 import java.util.*
@@ -17,7 +19,8 @@ import kotlin.concurrent.schedule
 class DashboardFragment : Fragment() {
     val name = this.tag
     private var _binding: FragmentDashboardBinding? = null
-    private val timer = Timer()
+    private lateinit var timer:Timer
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -30,7 +33,6 @@ class DashboardFragment : Fragment() {
     ): View {
         val homeViewModel =
             ViewModelProvider(this)[DashboardViewModel::class.java]
-        val mainViewModel: MainViewModel by activityViewModels()
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
 
 
@@ -109,21 +111,41 @@ class DashboardFragment : Fragment() {
 //
 //        }
 
-        val period: Long = 1000
-        timer.schedule(500, period) {
-            mainViewModel.repository.getUsageInfo(requireActivity(), mainViewModel)
-        }
-
         return binding.root
     }
 
     private fun refSysBaseInfo(it: SystemInfo) {
-        binding.tvSystemInfo.text = "${it.platform} ${it.platformVersion} ${it.kernelArch}"
-        binding.tvCpuInfo.text = "${it.coreNum}h ${it.memSumSize.ushr(30)}g ${it.cpuName}"
-        binding.tvNgxInfo1.text =
-            "ver.${it.proto}.${it.major}.${it.minor} ${it.forBoard} ${it.channel}"
+        binding.tvSystemInfo.text = String.format(getString(R.string.tvSystemInfo),
+            it.platform,
+            it.platformVersion,
+            it.kernelArch)
+        binding.tvCpuInfo.text = String.format(getString(R.string.tvCpuInfo),
+            it.coreNum,
+            it.memSumSize.ushr(30),
+            it.cpuName)
+        binding.tvNgxInfo1.text = String.format(getString(R.string.tvNgxInfo1),
+            it.proto,
+            it.major,
+            it.minor,
+            it.forBoard,
+            it.channel)
+
         binding.tvNgxInfo2.text = it.buildInfo
         binding.tvNgxInfo3.text = it.buildTime
+    }
+
+    override fun onStart() {
+        val period: Long = 1000
+        timer = Timer()
+        timer.schedule(500, period) {
+            mainViewModel.repository.getUsageInfo(requireActivity(), mainViewModel)
+        }
+        super.onStart()
+    }
+
+    override fun onPause() {
+        timer.cancel()
+        super.onPause()
     }
 
     override fun onDestroyView() {

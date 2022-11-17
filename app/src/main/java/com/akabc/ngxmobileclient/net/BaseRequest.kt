@@ -8,8 +8,8 @@ import com.android.volley.toolbox.JsonObjectRequest
 import org.json.JSONObject
 
 abstract class BaseRequest {
-    var tag = this.toString()
-    lateinit var url: String
+    abstract var tag: String
+    private lateinit var url: String
 
     abstract var body: JSONObject
     fun get(activity: Activity, mainViewModel: MainViewModel){
@@ -24,7 +24,7 @@ abstract class BaseRequest {
             }
         ) {
             override fun getHeaders(): MutableMap<String, String> {
-                setHeaders(mainViewModel)?.let {
+                headers(mainViewModel)?.let {
                     return it
                 }
                 return super.getHeaders()
@@ -37,7 +37,7 @@ abstract class BaseRequest {
 
     abstract fun onSuccess(activity: Activity, mainViewModel: MainViewModel, response: JSONObject)
     abstract fun onError(error: VolleyError)
-    abstract fun setHeaders(mainViewModel: MainViewModel):MutableMap<String, String>?
+    abstract fun headers(mainViewModel: MainViewModel):MutableMap<String, String>?
     fun url(url: String){
         this.url = url
     }

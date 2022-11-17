@@ -43,4 +43,7 @@
     <string name="mem">Mem</string>
     <string name="disk">Disk</string>
     <string name="net">Net</string>
+    <string name="tvSystemInfo" translatable="false">%1$s %2$s %3$s</string>
+    <string name="tvCpuInfo" translatable="false">%1$sh %2$sg %3$s</string>
+    <string name="tvNgxInfo1" translatable="false">ver.%1$s.%2$s.%3$s %4$s %5$s</string>
 </resources>

@@ -8,13 +8,15 @@ import com.akabc.ngxmobileclient.net.RequestKit
 import com.android.volley.VolleyError
 import org.json.JSONObject
 
-class CpuUsageInfo() : BaseRequest() {
+class CpuUsageInfo : BaseRequest() {
+    override var tag: String = this.toString()
     override var body = RequestKit().toJSONObject(
         "Offset" to 0,
         "Limit" to 1000,
         "Interval" to 0,
         "Percpu" to true
     )
+
     override fun onSuccess(activity: Activity, mainViewModel: MainViewModel, response: JSONObject) {
         try {
             // Log.d(name, response.toString())
@@ -34,7 +36,7 @@ class CpuUsageInfo() : BaseRequest() {
         Log.d(tag, error.toString())
     }
 
-    override fun setHeaders(mainViewModel: MainViewModel): MutableMap<String, String>? {
+    override fun headers(mainViewModel: MainViewModel): MutableMap<String, String>? {
         mainViewModel.loginResult.value?.success?.let {
             return mutableMapOf("Authorization" to it.token!!)
         }
