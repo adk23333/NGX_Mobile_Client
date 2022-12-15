@@ -7,7 +7,8 @@ import com.akabc.ngxmobileclient.net.BaseRequest
 import com.akabc.ngxmobileclient.net.RequestKit
 import org.json.JSONObject
 
-class GetCpuUsageInfo : BaseRequest() {
+class GetCpuUsageInfo(val url: String, val activity: Activity, val mainViewModel: MainViewModel) :
+    BaseRequest() {
     override var tag: String = this.toString()
     override var body: JSONObject? = RequestKit().toJSONObject(
         "Offset" to 0,
@@ -16,23 +17,24 @@ class GetCpuUsageInfo : BaseRequest() {
         "Percpu" to true
     )
 
-    fun get(url:String, activity: Activity, mainViewModel: MainViewModel) {
+    operator fun invoke() {
         super.request(url, activity, { response ->
             try {
                 // Log.d(name, response.toString())
                 val data = response.getJSONArray("Data")
                 val cpUsage = mutableListOf<Double>()
                 for (i in 0 until data.length()) {
-                    Log.d(tag + object{}.javaClass.enclosingMethod?.name, data.getDouble(i).toString())
+                    Log.d(tag + object {}.javaClass.enclosingMethod?.name,
+                        data.getDouble(i).toString())
                     cpUsage.add(data.getDouble(i))
                 }
                 mainViewModel.usageInfo(mainViewModel.usageInfo.value!!.copy(cpUsageInfo = cpUsage))
             } catch (e: Exception) {
-                Log.w(tag + object{}.javaClass.enclosingMethod?.name, e.toString())
+                Log.w(tag + object {}.javaClass.enclosingMethod?.name, e.toString())
             }
         },
             { error ->
-                Log.d(tag + object{}.javaClass.enclosingMethod?.name, error.toString())
+                Log.d(tag + object {}.javaClass.enclosingMethod?.name, error.toString())
             }
         ) {
             mainViewModel.loginResult.value?.success?.let {
@@ -40,5 +42,9 @@ class GetCpuUsageInfo : BaseRequest() {
             }
             null
         }
+    }
+
+    init {
+        invoke()
     }
 }

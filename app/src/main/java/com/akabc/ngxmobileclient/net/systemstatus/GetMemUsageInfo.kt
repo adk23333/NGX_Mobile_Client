@@ -6,10 +6,10 @@ import com.akabc.ngxmobileclient.MainViewModel
 import com.akabc.ngxmobileclient.net.BaseRequest
 import com.akabc.ngxmobileclient.ui.dashboard.MemUsageInfo
 
-class GetMemUsageInfo: BaseRequest() {
+class GetMemUsageInfo(val url: String, val activity: Activity, val mainViewModel: MainViewModel): BaseRequest() {
     override var tag: String = this.toString()
 
-    fun get(url:String, activity: Activity, mainViewModel: MainViewModel) {
+    operator fun invoke() {
         super.request(url, activity, { response ->
             try {
                 Log.d(tag, response.toString())
@@ -32,6 +32,10 @@ class GetMemUsageInfo: BaseRequest() {
             }
             null
         }
+    }
+
+    init {
+        invoke()
     }
 
 }

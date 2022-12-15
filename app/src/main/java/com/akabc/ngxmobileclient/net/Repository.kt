@@ -64,15 +64,21 @@ class Repository {
         isCheckLogin: Boolean,
     ) {
         // handle login
-        LoginRequest().let {
-            it.getUser(loginUser, isCheckLogin)
-            it.get("http://${loginUser.ip}:${loginUser.port}${activity.getString(R.string.login_url)}",activity, mainViewModel)
-        }
+        LoginRequest(
+             "http://${loginUser.ip}:${loginUser.port}${activity.getString(R.string.login_url)}",
+            loginUser, isCheckLogin,
+            activity,
+            mainViewModel)
     }
 
     fun getCaptcha(activity: Activity, mainViewModel: MainViewModel) {
         // val queue = SingletonVolley.getInstance(requireActivity().applicationContext).requestQueue
-        GetCaptcha().get("http://${user.ip}:${user.port}${activity.getString(R.string.captcha_id_url)}", activity, mainViewModel)
+        val getCaptcha = GetCaptcha()
+        getCaptcha {
+            url("http://${user.ip}:${user.port}${activity.getString(R.string.captcha_id_url)}")
+            activity(activity)
+            mainViewModel(mainViewModel)
+        }
     }
 
     fun getCaptchaImage(
@@ -100,7 +106,7 @@ class Repository {
     /**
      * 向服务器请求系统信息
      * **/
-    fun getSysInfo(activity: Activity, mainViewModel: MainViewModel){
+    fun getSysInfo(activity: Activity, mainViewModel: MainViewModel) {
         getBaseSysInfo(activity, mainViewModel)
         getBaseHardwareInfo(activity, mainViewModel)
         getBaseCpuInfo(activity, mainViewModel)
@@ -108,19 +114,31 @@ class Repository {
     }
 
     private fun getBaseSysInfo(activity: Activity, mainViewModel: MainViewModel) {
-        GetBaseSysInfo().get("http://${user.ip}:${user.port}${activity.getString(R.string.sys_info_url)}", activity, mainViewModel)
+        GetBaseSysInfo(
+            "http://${user.ip}:${user.port}${activity.getString(R.string.sys_info_url)}",
+            activity,
+            mainViewModel)
     }
 
     private fun getBaseHardwareInfo(activity: Activity, mainViewModel: MainViewModel) {
-        GetBaseHardwareInfo().get("http://${user.ip}:${user.port}${activity.getString(R.string.pc_info_url)}", activity, mainViewModel)
+        GetBaseHardwareInfo(
+            "http://${user.ip}:${user.port}${activity.getString(R.string.pc_info_url)}",
+            activity,
+            mainViewModel)
     }
 
     private fun getBaseCpuInfo(activity: Activity, mainViewModel: MainViewModel) {
-        GetBaseCpuInfo().get("http://${user.ip}:${user.port}${activity.getString(R.string.cpu_info_url)}",activity, mainViewModel)
+        GetBaseCpuInfo(
+            "http://${user.ip}:${user.port}${activity.getString(R.string.cpu_info_url)}",
+            activity,
+            mainViewModel)
     }
 
     private fun getMemInfo(activity: Activity, mainViewModel: MainViewModel) {
-        GetMemInfo().get("http://${user.ip}:${user.port}${activity.getString(R.string.mem_info_url)}",activity, mainViewModel)
+        GetMemInfo(
+            "http://${user.ip}:${user.port}${activity.getString(R.string.mem_info_url)}",
+            activity,
+            mainViewModel)
     }
 
     /**
@@ -134,18 +152,30 @@ class Repository {
     }
 
     private fun getCpuUsageInfo(activity: Activity, mainViewModel: MainViewModel) {
-        GetCpuUsageInfo().get("http://${user.ip}:${user.port}${activity.getString(R.string.cpu_usage_url)}",activity, mainViewModel)
+        GetCpuUsageInfo(
+            "http://${user.ip}:${user.port}${activity.getString(R.string.cpu_usage_url)}",
+            activity,
+            mainViewModel)
     }
 
     private fun getMemUsageInfo(activity: Activity, mainViewModel: MainViewModel) {
-        GetMemUsageInfo().get("http://${user.ip}:${user.port}${activity.getString(R.string.mem_usage_url)}", activity, mainViewModel)
+        GetMemUsageInfo(
+            "http://${user.ip}:${user.port}${activity.getString(R.string.mem_usage_url)}",
+            activity,
+            mainViewModel)
     }
 
     private fun getDiskUsageInfo(activity: Activity, mainViewModel: MainViewModel) {
-        GetDiskUsageInfo().get("http://${user.ip}:${user.port}${activity.getString(R.string.disk_usage_url)}", activity, mainViewModel)
+        GetDiskUsageInfo(
+            "http://${user.ip}:${user.port}${activity.getString(R.string.disk_usage_url)}",
+            activity,
+            mainViewModel)
     }
 
     private fun getNetUsageInfo(activity: Activity, mainViewModel: MainViewModel) {
-        GetNetUsageInfo().get("http://${user.ip}:${user.port}${activity.getString(R.string.net_usage_url)}",activity, mainViewModel)
+        GetNetUsageInfo(
+            "http://${user.ip}:${user.port}${activity.getString(R.string.net_usage_url)}",
+            activity,
+            mainViewModel)
     }
 }

@@ -11,15 +11,32 @@ import com.akabc.ngxmobileclient.ui.login.data.model.Captcha
 import com.akabc.ngxmobileclient.ui.login.data.model.User
 import org.json.JSONObject
 
-class LoginRequest: BaseRequest() {
+class LoginRequest(
+    val url: String,
+    private val loginUser: User,
+    private val isCheckLogin: Boolean,
+    val activity: Activity,
+    val mainViewModel: MainViewModel,
+) : BaseRequest() {
     override var tag: String = this.toString()
 
-    private lateinit var loginUser:User
     private lateinit var pwd: String
 
     override var body: JSONObject? = null
 
-    fun get(url:String, activity: Activity, mainViewModel: MainViewModel) {
+    operator fun invoke() {
+        this.pwd = if (isCheckLogin) {
+            loginUser.pwd
+        } else {
+            RequestKit().md5(loginUser.pwd)
+        }
+        body = RequestKit().toJSONObject(
+            "UserName" to loginUser.displayName,
+            "Password" to pwd,
+            "CaptchaId" to loginUser.captcha.ctId,
+            "CaptchaCode" to loginUser.captcha.ctCode,
+            "PasswordCipher" to "MD5"
+        )
         super.request(url, activity, { response ->
             try {
                 val data = response.getJSONObject("Data")
@@ -56,20 +73,8 @@ class LoginRequest: BaseRequest() {
         }
     }
 
-    fun getUser(loginUser: User, isCheckLogin: Boolean){
-        this.loginUser = loginUser
-        this.pwd = if (isCheckLogin){
-            loginUser.pwd
-        }else{
-            RequestKit().md5(loginUser.pwd)
-        }
-        body = RequestKit().toJSONObject(
-            "UserName" to loginUser.displayName,
-            "Password" to pwd,
-            "CaptchaId" to loginUser.captcha.ctId,
-            "CaptchaCode" to loginUser.captcha.ctCode,
-            "PasswordCipher" to "MD5"
-        )
+    init {
+        invoke()
     }
 
 }

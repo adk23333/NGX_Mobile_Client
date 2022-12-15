@@ -8,7 +8,8 @@ import com.akabc.ngxmobileclient.net.RequestKit
 import com.akabc.ngxmobileclient.ui.dashboard.NetUsageInfo
 import org.json.JSONObject
 
-class GetNetUsageInfo:BaseRequest() {
+class GetNetUsageInfo(val url: String, val activity: Activity, val mainViewModel: MainViewModel) :
+    BaseRequest() {
     override var tag: String = this.toString()
     override var body: JSONObject? = RequestKit().toJSONObject(
         "Offset" to 0,
@@ -16,7 +17,7 @@ class GetNetUsageInfo:BaseRequest() {
         "Pernic" to true
     )
 
-    fun get(url:String, activity: Activity, mainViewModel: MainViewModel) {
+    operator fun invoke() {
         super.request(url, activity, { response ->
             try {
                 Log.d(tag, response.toString())
@@ -39,11 +40,11 @@ class GetNetUsageInfo:BaseRequest() {
                 }
                 mainViewModel.usageInfo(mainViewModel.usageInfo.value!!.copy(netUsageInfo = nets))
             } catch (e: Exception) {
-                Log.w(tag + object{}.javaClass.enclosingMethod?.name, e.toString())
+                Log.w(tag + object {}.javaClass.enclosingMethod?.name, e.toString())
             }
         },
             { error ->
-                Log.d(tag + object{}.javaClass.enclosingMethod?.name, error.toString())
+                Log.d(tag + object {}.javaClass.enclosingMethod?.name, error.toString())
             }
         ) {
             mainViewModel.loginResult.value?.success?.let {
@@ -51,5 +52,9 @@ class GetNetUsageInfo:BaseRequest() {
             }
             null
         }
+    }
+
+    init {
+        invoke()
     }
 }
