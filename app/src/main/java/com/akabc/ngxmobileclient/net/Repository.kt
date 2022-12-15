@@ -15,13 +15,8 @@ import com.akabc.ngxmobileclient.net.systemstatus.GetCpuUsageInfo
 import com.akabc.ngxmobileclient.net.systemstatus.GetDiskUsageInfo
 import com.akabc.ngxmobileclient.net.systemstatus.GetMemUsageInfo
 import com.akabc.ngxmobileclient.net.systemstatus.GetNetUsageInfo
-import com.akabc.ngxmobileclient.ui.dashboard.SystemInfo
-import com.akabc.ngxmobileclient.ui.login.data.Result
-import com.akabc.ngxmobileclient.ui.login.data.model.Captcha
 import com.akabc.ngxmobileclient.ui.login.data.model.User
-import com.android.volley.Request
 import com.android.volley.toolbox.ImageRequest
-import com.android.volley.toolbox.JsonObjectRequest
 import java.time.Instant
 
 
@@ -70,18 +65,14 @@ class Repository {
     ) {
         // handle login
         LoginRequest().let {
-            it.url("http://${loginUser.ip}:${loginUser.port}${activity.getString(R.string.login_url)}")
             it.getUser(loginUser, isCheckLogin)
-            it.get(activity, mainViewModel)
+            it.get("http://${loginUser.ip}:${loginUser.port}${activity.getString(R.string.login_url)}",activity, mainViewModel)
         }
     }
 
     fun getCaptcha(activity: Activity, mainViewModel: MainViewModel) {
         // val queue = SingletonVolley.getInstance(requireActivity().applicationContext).requestQueue
-        GetCaptcha().let {
-            it.url("http://${user.ip}:${user.port}${activity.getString(R.string.captcha_id_url)}")
-            it.get(activity, mainViewModel)
-        }
+        GetCaptcha().get("http://${user.ip}:${user.port}${activity.getString(R.string.captcha_id_url)}", activity, mainViewModel)
     }
 
     fun getCaptchaImage(
@@ -117,32 +108,19 @@ class Repository {
     }
 
     private fun getBaseSysInfo(activity: Activity, mainViewModel: MainViewModel) {
-        GetBaseSysInfo().let {
-            it.url("http://${user.ip}:${user.port}${activity.getString(R.string.sys_info_url)}")
-            it.get(activity, mainViewModel)
-        }
-
+        GetBaseSysInfo().get("http://${user.ip}:${user.port}${activity.getString(R.string.sys_info_url)}", activity, mainViewModel)
     }
 
     private fun getBaseHardwareInfo(activity: Activity, mainViewModel: MainViewModel) {
-        GetBaseHardwareInfo().let {
-            it.url("http://${user.ip}:${user.port}${activity.getString(R.string.pc_info_url)}")
-            it.get(activity, mainViewModel)
-        }
+        GetBaseHardwareInfo().get("http://${user.ip}:${user.port}${activity.getString(R.string.pc_info_url)}", activity, mainViewModel)
     }
 
     private fun getBaseCpuInfo(activity: Activity, mainViewModel: MainViewModel) {
-        GetBaseCpuInfo().let {
-            it.url("http://${user.ip}:${user.port}${activity.getString(R.string.cpu_info_url)}")
-            it.get(activity, mainViewModel)
-        }
+        GetBaseCpuInfo().get("http://${user.ip}:${user.port}${activity.getString(R.string.cpu_info_url)}",activity, mainViewModel)
     }
 
     private fun getMemInfo(activity: Activity, mainViewModel: MainViewModel) {
-        GetMemInfo().let {
-            it.url("http://${user.ip}:${user.port}${activity.getString(R.string.mem_info_url)}")
-            it.get(activity, mainViewModel)
-        }
+        GetMemInfo().get("http://${user.ip}:${user.port}${activity.getString(R.string.mem_info_url)}",activity, mainViewModel)
     }
 
     /**
@@ -156,31 +134,18 @@ class Repository {
     }
 
     private fun getCpuUsageInfo(activity: Activity, mainViewModel: MainViewModel) {
-        GetCpuUsageInfo().let {
-            it.url("http://${user.ip}:${user.port}${activity.getString(R.string.cpu_usage_url)}")
-            it.get(activity, mainViewModel)
-        }
+        GetCpuUsageInfo().get("http://${user.ip}:${user.port}${activity.getString(R.string.cpu_usage_url)}",activity, mainViewModel)
     }
 
     private fun getMemUsageInfo(activity: Activity, mainViewModel: MainViewModel) {
-        GetMemUsageInfo().let {
-            it.url("http://${user.ip}:${user.port}${activity.getString(R.string.mem_usage_url)}")
-            it.get(activity, mainViewModel)
-        }
+        GetMemUsageInfo().get("http://${user.ip}:${user.port}${activity.getString(R.string.mem_usage_url)}", activity, mainViewModel)
     }
 
     private fun getDiskUsageInfo(activity: Activity, mainViewModel: MainViewModel) {
-        GetDiskUsageInfo().let {
-            it.url("http://${user.ip}:${user.port}${activity.getString(R.string.disk_usage_url)}")
-            it.get(activity, mainViewModel)
-        }
+        GetDiskUsageInfo().get("http://${user.ip}:${user.port}${activity.getString(R.string.disk_usage_url)}", activity, mainViewModel)
     }
 
     private fun getNetUsageInfo(activity: Activity, mainViewModel: MainViewModel) {
-        val url = "http://${user.ip}:${user.port}${activity.getString(R.string.net_usage_url)}"
-        GetNetUsageInfo().let {
-            it.url("http://${user.ip}:${user.port}${activity.getString(R.string.net_usage_url)}")
-            it.get(activity, mainViewModel)
-        }
+        GetNetUsageInfo().get("http://${user.ip}:${user.port}${activity.getString(R.string.net_usage_url)}",activity, mainViewModel)
     }
 }

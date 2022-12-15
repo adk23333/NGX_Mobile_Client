@@ -9,7 +9,6 @@ import com.akabc.ngxmobileclient.net.RequestKit
 import com.akabc.ngxmobileclient.ui.login.data.Result
 import com.akabc.ngxmobileclient.ui.login.data.model.Captcha
 import com.akabc.ngxmobileclient.ui.login.data.model.User
-import com.android.volley.VolleyError
 import org.json.JSONObject
 
 class LoginRequest: BaseRequest() {
@@ -20,42 +19,41 @@ class LoginRequest: BaseRequest() {
 
     override var body: JSONObject? = null
 
-    override fun onSuccess(activity: Activity, mainViewModel: MainViewModel, response: JSONObject) {
-        Log.d(tag, response.toString())
-        try {
-            val data = response.getJSONObject("Data")
-            val token = data.getString("Token")
-            val userData = data.getJSONObject("UserData")
-            val uid = userData.getString("Id")
-            val expirationTime = data.getInt("ExpiresAt")
+    fun get(url:String, activity: Activity, mainViewModel: MainViewModel) {
+        super.request(url, activity, { response ->
+            try {
+                val data = response.getJSONObject("Data")
+                val token = data.getString("Token")
+                val userData = data.getJSONObject("UserData")
+                val uid = userData.getString("Id")
+                val expirationTime = data.getInt("ExpiresAt")
 
-            val fakeUser =
-                User(uid,
-                    loginUser.displayName,
-                    token,
-                    expirationTime,
-                    pwd,
-                    Captcha(loginUser.captcha.ctId, loginUser.captcha.ctCode),
-                    loginUser.ip,
-                    loginUser.port)
-            val result = Result.Success(fakeUser)
-            mainViewModel.repository.setLoggedInUser(result.data)
-            mainViewModel.setLoginResult(result)
-        } catch (e: Exception) {
-            val failMsg = FailMsg("Nothing", 0)
-            failMsg.msg = response.getString("Message")
-            failMsg.code = response.getInt("Code")
-            mainViewModel.setLoginResult(Result.Fail(failMsg))
+                val fakeUser =
+                    User(uid,
+                        loginUser.displayName,
+                        token,
+                        expirationTime,
+                        pwd,
+                        Captcha(loginUser.captcha.ctId, loginUser.captcha.ctCode),
+                        loginUser.ip,
+                        loginUser.port)
+                val result = Result.Success(fakeUser)
+                mainViewModel.repository.setLoggedInUser(result.data)
+                mainViewModel.setLoginResult(result)
+            } catch (e: Exception) {
+                val failMsg = FailMsg("Nothing", 0)
+                failMsg.msg = response.getString("Message")
+                failMsg.code = response.getInt("Code")
+                mainViewModel.setLoginResult(Result.Fail(failMsg))
+            }
+        },
+            { error ->
+                Log.e(tag, error.toString())
+                mainViewModel.setLoginResult(Result.Error(error))
+            }
+        ) {
+            null
         }
-    }
-
-    override fun onError(error: VolleyError, mainViewModel: MainViewModel) {
-        Log.e(tag, error.toString())
-        mainViewModel.setLoginResult(Result.Error(error))
-    }
-
-    override fun headers(mainViewModel: MainViewModel): MutableMap<String, String>? {
-        return null
     }
 
     fun getUser(loginUser: User, isCheckLogin: Boolean){
