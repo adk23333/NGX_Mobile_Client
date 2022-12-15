@@ -8,7 +8,6 @@ import android.view.Menu
 import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.WindowCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -21,13 +20,14 @@ import com.akabc.ngxmobileclient.ui.login.data.model.Captcha
 import com.akabc.ngxmobileclient.ui.login.data.model.User
 import com.google.android.material.navigation.NavigationView
 
+
 class MainActivity : AppCompatActivity() {
     private val name = this.toString()
     private lateinit var appBarConfiguration: AppBarConfiguration
     private val mainViewModel: MainViewModel by viewModels {
         ViewModelFactory((application as NewApplication).repository)
     }
-    lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,21 +39,18 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.appBarMain.toolbar)
 
-        //修改状态栏颜色
-        WindowCompat.setDecorFitsSystemWindows(window, true)/*
-        WindowInsetsControllerCompat(window, binding.root).let { controller ->
-            controller.hide(WindowInsetsCompat.Type.systemBars())
-            controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-        }*/
-        val sharedPref = this.getPreferences(Context.MODE_PRIVATE) ?: return
+        /** 修改状态栏颜色 **/
+        // immersive(binding.appBarMain.toolbar, true)
 
         /**  获取本地存储的登录用户信息  **/
+        val sharedPref = this.getPreferences(Context.MODE_PRIVATE) ?: return
         getUser(sharedPref)
 
         binding.appBarMain.fab.setOnClickListener {
             val loginFragment = LoginFragment()
             loginFragment.show(supportFragmentManager, "login")
         }
+        binding.appBarMain.fab.setCornerRadiusResource(R.dimen.fab_corner)
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val headerView = navView.inflateHeaderView(R.layout.nav_header_main)

@@ -3,6 +3,7 @@ package com.akabc.ngxmobileclient.net
 import android.app.Activity
 import android.util.Log
 import com.akabc.ngxmobileclient.MainViewModel
+import com.android.volley.Header
 import com.android.volley.Request.Method
 import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
@@ -14,19 +15,25 @@ abstract class BaseRequest {
     val method = Method.POST
 
     open var body: JSONObject? = null
-    fun get(activity: Activity, mainViewModel: MainViewModel){
+    fun get(
+        activity: Activity,
+        mainViewModel: MainViewModel,
+        onSuccess:(JSONObject)->Unit,
+        onError: (VolleyError)->Unit,
+        headers:()->MutableMap<String, String>?,
+    ) {
         val jsonObjectRequest = object : JsonObjectRequest(method, url, body,
             { response ->
                 Log.d(tag, response.toString())
-                onSuccess(activity, mainViewModel, response)
+                onSuccess(response)
             },
             { error ->
                 Log.d(tag, error.toString())
-                onError(error, mainViewModel)
+                onError(error)
             }
         ) {
             override fun getHeaders(): MutableMap<String, String> {
-                headers(mainViewModel)?.let {
+                headers()?.let {
                     return it
                 }
                 return super.getHeaders()
@@ -37,10 +44,10 @@ abstract class BaseRequest {
             .addToRequestQueue(jsonObjectRequest)
     }
 
-    abstract fun onSuccess(activity: Activity, mainViewModel: MainViewModel, response: JSONObject)
-    abstract fun onError(error: VolleyError, mainViewModel: MainViewModel)
-    abstract fun headers(mainViewModel: MainViewModel):MutableMap<String, String>?
-    fun url(url: String){
+    //    abstract fun onSuccess(activity: Activity, mainViewModel: MainViewModel, response: JSONObject)
+//    abstract fun onError(error: VolleyError, mainViewModel: MainViewModel)
+//    abstract fun headers(mainViewModel: MainViewModel):MutableMap<String, String>?
+    fun url(url: String) {
         this.url = url
     }
 }

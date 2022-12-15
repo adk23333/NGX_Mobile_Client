@@ -15,7 +15,7 @@
         <activity
             android:name="com.akabc.ngxmobileclient.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.NGXMobileClient.NoActionBar">
+            android:theme="@style/Theme.NGXMobileClient">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
