@@ -9,17 +9,19 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/Theme.NGXMobileClient.AppBarOverlay">
+        android:fitsSystemWindows="true">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
+            android:background="?attr/colorSurface"
+            android:backgroundTint="@color/surface_2"
+            android:backgroundTintMode="src_atop"
             android:fitsSystemWindows="true"
             app:popupTheme="@style/Theme.NGXMobileClient.PopupOverlay"
             app:titleCentered="true"
-            app:titleTextColor="@color/black" />
+            app:titleTextColor="?attr/colorSecondary" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -32,7 +34,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="?attr/dialogPreferredPadding"
         android:padding="16dp"
-        app:backgroundTint="@color/primary_80"
+        app:backgroundTint="?attr/colorPrimaryVariant"
         app:collapsedSize="96dp"
         app:fabCustomSize="96dp"
         app:icon="@drawable/ic_user_24"

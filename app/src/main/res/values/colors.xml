@@ -2,29 +2,36 @@
 <resources>
     <color name="transparent">#00000000</color>
 
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="indigo_200">#9FA8DA</color>
-    <color name="indigo_500">#3F51B5</color>
-    <color name="indigo_700">#303F9F</color>
-    <color name="primary_99">#FFFBFE</color>
+    <color name="primary_100">#FFFFFF</color>
     <color name="primary_90">#EADDFF</color>
     <color name="primary_80">#D0BCFF</color>
     <color name="primary_60">#9A82DB</color>
     <color name="primary_40">#6750A4</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
+    <color name="primary_30">#4F378B</color>
+    <color name="primary_20">#381E72</color>
+    <color name="primary_10">#21005D</color>
+
+    <color name="secondary_100">#FFFFFF</color>
+    <color name="secondary_90">#E8DEF8</color>
+    <color name="secondary_80">#CCC2DC</color>
+    <color name="secondary_40">#625B71</color>
+    <color name="secondary_20">#332D41</color>
+    <color name="secondary_10">#1D192B</color>
+
+    <color name="surface">#FFFBFE</color>
+    <color name="surface_dark">#1C1B1F</color>
+    <color name="surface_1">#0D6750A4</color>
+    <color name="surface_2">#146750A4</color>
+
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="status_bar">#993949AB</color>
+
+    <color name="status_bar">#FFF3EEF7</color>
+    <color name="status_bar_dark">#221F29</color>
+
     <color name="bar">@color/primary_80</color>
     <color name="background">#FEFBFF</color>
-    <color name="card_bg">@color/indigo_200</color>
-    <color name="card_tv">#47464A</color>
-    <color name="pink">#FF77A5</color>
-    <color name="login_card_bg">#E6E8EAF6</color>
-    <color name="login_button">@color/primary_90</color>
+
     <color name="process_bar_start">#66BB6A</color>
     <color name="process_bar_end">#F4511E</color>
     <color name="net_down">@color/process_bar_start</color>
