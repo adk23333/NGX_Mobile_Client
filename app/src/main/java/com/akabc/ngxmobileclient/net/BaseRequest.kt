@@ -1,6 +1,5 @@
 package com.akabc.ngxmobileclient.net
 
-import android.app.Activity
 import android.util.Log
 import com.android.volley.Request.Method
 import com.android.volley.VolleyError
@@ -14,14 +13,13 @@ abstract class BaseRequest {
     open var body: JSONObject? = null
     fun request(
         url: String,
-        activity: Activity,
+        requestQueue: SingletonVolley,
         onSuccess: (JSONObject) -> Unit,
         onError: (VolleyError) -> Unit,
         headers: () -> MutableMap<String, String>?,
     ) {
         val jsonObjectRequest = object : JsonObjectRequest(method, url, body,
             { response ->
-                Log.d(tag, response.toString())
                 onSuccess(response)
             },
             { error ->
@@ -36,16 +34,20 @@ abstract class BaseRequest {
                 return super.getHeaders()
             }
         }
-
-        SingletonVolley.getInstance(activity.applicationContext)
-            .addToRequestQueue(jsonObjectRequest)
+        requestQueue.addToRequestQueue(jsonObjectRequest)
     }
 
-    class Form {
-
+    fun toJSONObject(vararg params: Pair<String, Any?>): JSONObject {
+        val param = JSONObject()
+        for (i in params) {
+            if (i.second is Set<*>) {
+                for (j in i.second as Set<*>) {
+                    param.append(i.first, j)
+                }
+            } else {
+                param.put(i.first, i.second)
+            }
+        }
+        return param
     }
-
-    //    abstract fun onSuccess(activity: Activity, mainViewModel: MainViewModel, response: JSONObject)
-//    abstract fun onError(error: VolleyError, mainViewModel: MainViewModel)
-//    abstract fun headers(mainViewModel: MainViewModel):MutableMap<String, String>?
 }

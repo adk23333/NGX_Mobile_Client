@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cv_video"
+    android:layout_width="160dp"
+    android:layout_height="190dp"
+    android:layout_margin="4dp"
+    android:clickable="true"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="2dp"
+    app:strokeWidth="0dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.android.volley.toolbox.NetworkImageView
+            android:id="@+id/im_video"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:background="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_video_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="video 1"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/im_video" />
+
+        <TextView
+            android:id="@+id/tv_video_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2022.12.19 13:00"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/tv_video_title"
+            app:layout_constraintTop_toBottomOf="@+id/tv_video_title" />
+
+        <TextView
+            android:id="@+id/tv_video_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1000MB"
+            android:textAlignment="textStart"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@+id/tv_video_title"
+            app:layout_constraintTop_toBottomOf="@+id/tv_video_date" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>
+

@@ -1,8 +1,6 @@
 package com.akabc.ngxmobileclient.ui.dashboard
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,18 +10,18 @@ import androidx.lifecycle.ViewModelProvider
 import com.akabc.ngxmobileclient.MainViewModel
 import com.akabc.ngxmobileclient.R
 import com.akabc.ngxmobileclient.databinding.FragmentDashboardBinding
-import com.akabc.ngxmobileclient.net.RequestKit
+import com.akabc.ngxmobileclient.net.diskDataFormat
+import com.akabc.ngxmobileclient.net.formatBy
+import com.akabc.ngxmobileclient.net.memDataFormat
+import com.akabc.ngxmobileclient.net.v
 import java.util.*
 import kotlin.concurrent.schedule
 
 class DashboardFragment : Fragment() {
     val name = this.tag
     private var _binding: FragmentDashboardBinding? = null
-    private lateinit var timer:Timer
+    private lateinit var timer: Timer
     private val mainViewModel: MainViewModel by activityViewModels()
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -31,8 +29,7 @@ class DashboardFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this)[DashboardViewModel::class.java]
+        val homeViewModel = ViewModelProvider(this)[DashboardViewModel::class.java]
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
 
 
@@ -47,15 +44,19 @@ class DashboardFragment : Fragment() {
         val tvNetDown = binding.tvNetDown
         val tvNetUp = binding.tvNetUp
 
+        mainViewModel.setFab(R.drawable.ic_user_24, 96)
 
         mainViewModel.sysBaseInfo.observe(viewLifecycleOwner) {
             refSysBaseInfo(it)
         }
         mainViewModel.loginResult.observe(viewLifecycleOwner) {
-            mainViewModel.repository.getSysInfo(requireActivity(), mainViewModel)
+            mainViewModel.repository.getSysInfo(
+                listOf(getString(R.string.sys_info_url),
+                getString(R.string.pc_info_url),
+                getString(R.string.cpu_info_url),
+                getString(R.string.mem_info_url)), mainViewModel)
         }
         mainViewModel.usageInfo.observe(viewLifecycleOwner) { usage ->
-            Log.d(name, usage.toString())
 
             /** CPU **/
             usage.cpUsageInfo.let { list ->
@@ -71,8 +72,8 @@ class DashboardFragment : Fragment() {
             /** Mem **/
             usage.memUsageInfo.let {
                 pgBarMem.progress = it.percent.toInt()
-                tvMem.text =
-                    String.format("%.1f%%\n%s", it.percent, RequestKit().memDataFormat(it.usedSize))
+                tvMem.text = it.percent v it.usedSize.memDataFormat formatBy "%.1f%%\n%s"
+                //String.format("%.1f%%\n%s", it.percent, it.usedSize.memDataFormat)
             }
 
             /** Disk **/
@@ -85,8 +86,7 @@ class DashboardFragment : Fragment() {
                 }
                 val pgUsage = ((used / sum.toDouble()) * 100)
                 pgBarDisk.progress = pgUsage.toInt()
-                tvDisk.text =
-                    String.format("%.1f%%\n%s", pgUsage, RequestKit().diskDataFormat(used))
+                tvDisk.text = String.format("%.1f%%\n%s", pgUsage, used.diskDataFormat)
             }
 
             /** Net **/
@@ -100,10 +100,9 @@ class DashboardFragment : Fragment() {
                     time = i.timeIncre
                 }
                 pgBarNet.progress = ((recvIncre.toDouble() / (recvIncre + sentIncre)) * 100).toInt()
-                tvNetDown.text = String.format("↓%s",
-                    RequestKit().memDataFormat(recvIncre))
+                tvNetDown.text = String.format("↓%s", recvIncre.memDataFormat)
                 tvNetUp.text =
-                    String.format("↑%s", RequestKit().memDataFormat(sentIncre))
+                    String.format("↑%s", sentIncre.memDataFormat)
             }
 
         }
@@ -134,13 +133,17 @@ class DashboardFragment : Fragment() {
         binding.tvNgxInfo3.text = it.buildTime
     }
 
-    override fun onStart() {
+    override fun onResume() {
+        super.onResume()
         val period: Long = 1000
         timer = Timer()
         timer.schedule(500, period) {
-            mainViewModel.repository.getUsageInfo(requireActivity(), mainViewModel)
+            mainViewModel.repository.getUsageInfo(
+                listOf(getString(R.string.cpu_usage_url),
+                    getString(R.string.mem_usage_url),
+                    getString(R.string.disk_usage_url),
+                    getString(R.string.net_usage_url)), mainViewModel)
         }
-        super.onStart()
     }
 
     override fun onPause() {

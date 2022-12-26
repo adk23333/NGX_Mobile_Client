@@ -163,7 +163,6 @@ class LoginFragment : DialogFragment() {
         }
 
         loginButton.setOnClickListener {
-            Log.d(name, "button click")
             mainViewModel.captcha.value?.ctId.let { it2 ->
                 loadingProgressBar.visibility = View.VISIBLE
                 val loginUser = User(
@@ -175,13 +174,14 @@ class LoginFragment : DialogFragment() {
                 )
                 mainViewModel.login(
                     loginUser,
-                    requireActivity()
+                    getString(R.string.login_url)
                 )
             }
         }
         captchaImage.setOnClickListener {
-            Log.d(name, "captchaImage click")
-            mainViewModel.repository.getCaptcha(requireActivity(), mainViewModel)
+            mainViewModel.repository.getCaptcha(getString(R.string.captcha_id_url),
+                getString(R.string.captcha_url),
+                mainViewModel)
         }
     }
 

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
 import android.view.Menu
 import android.widget.ImageView
 import androidx.activity.viewModels
@@ -20,9 +21,8 @@ import com.akabc.ngxmobileclient.ui.login.data.model.Captcha
 import com.akabc.ngxmobileclient.ui.login.data.model.User
 import com.google.android.material.navigation.NavigationView
 
-
 class MainActivity : AppCompatActivity() {
-    private val name = this.toString()
+    private val tag = this.toString()
     private lateinit var appBarConfiguration: AppBarConfiguration
     private val mainViewModel: MainViewModel by viewModels {
         ViewModelFactory((application as NewApplication).repository)
@@ -50,24 +50,33 @@ class MainActivity : AppCompatActivity() {
             val loginFragment = LoginFragment()
             loginFragment.show(supportFragmentManager, "login")
         }
-        binding.appBarMain.fab.setCornerRadiusResource(R.dimen.fab_corner)
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
         val headerView = navView.inflateHeaderView(R.layout.nav_header_main)
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(setOf(
             R.id.nav_dashboard,
-            R.id.nav_history,
+            R.id.nav_media,
             R.id.nav_folder,
             R.id.nav_app), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+
 
         val headIv: ImageView =
             headerView.findViewById(R.id.imageView_head)
         headIv.setOnClickListener {
             val loginFragment = LoginFragment()
             loginFragment.show(supportFragmentManager, "login")
+        }
+
+        mainViewModel.fab.observe(this){ _fab ->
+            val fab = binding.appBarMain.fab
+            fab.setImageResource(_fab.icon)
+            fab.customSize =
+                TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,_fab.size.toFloat(), resources.displayMetrics)
+                    .toInt()
         }
 
         /** 保存登录用户信息 **/
@@ -123,10 +132,9 @@ class MainActivity : AppCompatActivity() {
                 sharedPref.getString(keys[7],"").toString(),
                 sharedPref.getString(keys[8],"").toString(),
             )
-            Log.d(name, user.toString())
             mainViewModel.setLoginResultForRecord(this, user)
         } catch (e: Exception) {
-            Log.d(name, e.toString())
+            Log.d(tag, e.toString())
         }
     }
 }

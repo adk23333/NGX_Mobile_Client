@@ -1,12 +1,12 @@
 package com.akabc.ngxmobileclient.net.login
 
-import android.app.Activity
 import android.util.Log
 import com.akabc.ngxmobileclient.MainViewModel
+import com.akabc.ngxmobileclient.data.Result
 import com.akabc.ngxmobileclient.net.BaseRequest
 import com.akabc.ngxmobileclient.net.FailMsg
-import com.akabc.ngxmobileclient.net.RequestKit
-import com.akabc.ngxmobileclient.ui.login.data.Result
+import com.akabc.ngxmobileclient.net.MD5
+import com.akabc.ngxmobileclient.net.SingletonVolley
 import com.akabc.ngxmobileclient.ui.login.data.model.Captcha
 import com.akabc.ngxmobileclient.ui.login.data.model.User
 import org.json.JSONObject
@@ -15,7 +15,7 @@ class LoginRequest(
     val url: String,
     private val loginUser: User,
     private val isCheckLogin: Boolean,
-    val activity: Activity,
+    val singletonVolley: SingletonVolley,
     val mainViewModel: MainViewModel,
 ) : BaseRequest() {
     override var tag: String = this.toString()
@@ -28,16 +28,16 @@ class LoginRequest(
         this.pwd = if (isCheckLogin) {
             loginUser.pwd
         } else {
-            RequestKit().md5(loginUser.pwd)
+            loginUser.pwd.MD5
         }
-        body = RequestKit().toJSONObject(
+        body = toJSONObject(
             "UserName" to loginUser.displayName,
             "Password" to pwd,
             "CaptchaId" to loginUser.captcha.ctId,
             "CaptchaCode" to loginUser.captcha.ctCode,
             "PasswordCipher" to "MD5"
         )
-        super.request(url, activity, { response ->
+        super.request(url, singletonVolley, { response ->
             try {
                 val data = response.getJSONObject("Data")
                 val token = data.getString("Token")
@@ -65,7 +65,7 @@ class LoginRequest(
             }
         },
             { error ->
-                Log.e(tag, error.toString())
+                Log.d(tag, error.toString())
                 mainViewModel.setLoginResult(Result.Error(error))
             }
         ) {

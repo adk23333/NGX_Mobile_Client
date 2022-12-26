@@ -12,9 +12,9 @@
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
-        android:id="@+id/nav_history"
-        android:name="com.akabc.ngxmobileclient.ui.smile.GalleryFragment"
-        android:label="@string/menu_history"
+        android:id="@+id/nav_media"
+        android:name="com.akabc.ngxmobileclient.ui.media.MediaFragment"
+        android:label="@string/menu_media"
         tools:layout="@layout/fragment_media" />
 
     <fragment

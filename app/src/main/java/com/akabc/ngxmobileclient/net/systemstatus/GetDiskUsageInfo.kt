@@ -1,18 +1,17 @@
 package com.akabc.ngxmobileclient.net.systemstatus
 
-import android.app.Activity
 import android.util.Log
 import com.akabc.ngxmobileclient.MainViewModel
 import com.akabc.ngxmobileclient.net.BaseRequest
+import com.akabc.ngxmobileclient.net.SingletonVolley
 import com.akabc.ngxmobileclient.ui.dashboard.DiskUsageInfo
 
-class GetDiskUsageInfo(val url: String, val activity: Activity, val mainViewModel: MainViewModel): BaseRequest() {
+class GetDiskUsageInfo(val url: String, val singletonVolley: SingletonVolley, val mainViewModel: MainViewModel): BaseRequest() {
     override var tag: String = this.toString()
 
     operator fun invoke() {
-        super.request(url, activity, { response ->
+        super.request(url, singletonVolley, { response ->
             try {
-                Log.d(tag, response.toString())
                 val data = response.getJSONArray("Data")
                 val disks = mutableListOf<DiskUsageInfo>()
                 for (i in 0 until data.length()) {

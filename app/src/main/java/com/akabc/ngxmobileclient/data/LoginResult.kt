@@ -1,4 +1,4 @@
-package com.akabc.ngxmobileclient.ui.login
+package com.akabc.ngxmobileclient.data
 
 import com.akabc.ngxmobileclient.net.FailMsg
 import com.akabc.ngxmobileclient.ui.login.data.model.User

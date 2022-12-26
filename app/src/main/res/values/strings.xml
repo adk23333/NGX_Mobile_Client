@@ -1,4 +1,3 @@
-
 <resources>
     <string name="app_name">NGX Mobile Client</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -18,11 +17,14 @@
     <string name="cpu_info_url" translatable="false">/api/v1/cloud/app/hardware/cpu</string>
     <string name="mem_info_url" translatable="false">/api/v1/cloud/app/hardware/memory</string>
     <string name="cpu_usage_url" translatable="false">/api/v1/cloud/app/hardware/cpu/usage</string>
-    <string name="mem_usage_url" translatable="false">/api/v1/cloud/app/hardware/memory/usage</string>0
+    <string name="mem_usage_url" translatable="false">/api/v1/cloud/app/hardware/memory/usage</string>
     <string name="disk_usage_url" translatable="false">/api/v1/cloud/app/browser/volumes</string>
     <string name="net_usage_url" translatable="false">/api/v1/cloud/app/hardware/network/usage</string>
+    <string name="media_url" translatable="false">/api/v1/cloud/app/media/library/query</string>
+    <string name="video_thumbnail_url" translatable="false">/api/v1/cloud/app/browser/thumbnail</string>
 
-    <string name="menu_history">History</string>
+    <!-- Navigation -->
+    <string name="menu_media">Media</string>
     <string name="menu_folder">Disk</string>
     <string name="menu_dashboard">Dashboard</string>
     <string name="menu_setting">应用服务</string>
@@ -46,4 +48,10 @@
     <string name="tvSystemInfo" translatable="false">%1$s %2$s %3$s</string>
     <string name="tvCpuInfo" translatable="false">%1$sh %2$sg %3$s</string>
     <string name="tvNgxInfo1" translatable="false">ver.%1$s.%2$s.%3$s %4$s %5$s</string>
+
+    <!-- Media -->
+    <string name="media_tab_video">video</string>
+    <string name="media_tab_music">music</string>
+    <string name="media_tab_file">file</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

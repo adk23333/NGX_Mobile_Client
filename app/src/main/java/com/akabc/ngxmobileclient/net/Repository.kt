@@ -7,6 +7,7 @@ import com.akabc.ngxmobileclient.MainViewModel
 import com.akabc.ngxmobileclient.R
 import com.akabc.ngxmobileclient.net.login.GetCaptcha
 import com.akabc.ngxmobileclient.net.login.LoginRequest
+import com.akabc.ngxmobileclient.net.media.GetVideos
 import com.akabc.ngxmobileclient.net.systeminfo.GetBaseCpuInfo
 import com.akabc.ngxmobileclient.net.systeminfo.GetBaseHardwareInfo
 import com.akabc.ngxmobileclient.net.systeminfo.GetBaseSysInfo
@@ -16,11 +17,13 @@ import com.akabc.ngxmobileclient.net.systemstatus.GetDiskUsageInfo
 import com.akabc.ngxmobileclient.net.systemstatus.GetMemUsageInfo
 import com.akabc.ngxmobileclient.net.systemstatus.GetNetUsageInfo
 import com.akabc.ngxmobileclient.ui.login.data.model.User
+import com.akabc.ngxmobileclient.ui.media.MediaViewModel
 import com.android.volley.toolbox.ImageRequest
+import com.android.volley.toolbox.NetworkImageView
 import java.time.Instant
 
 
-class Repository {
+class Repository(val singletonVolley: SingletonVolley) {
     private val name = this.toString()
 
     // in-memory cache of the loggedInUser object
@@ -39,7 +42,7 @@ class Repository {
                         //TODO 刷新令牌
                         login(
                             user,
-                            activity,
+                            activity.getString(R.string.login_url),
                             mainViewModel,
                             true)
                     }
@@ -59,43 +62,40 @@ class Repository {
 
     fun login(
         loginUser: User,
-        activity: Activity,
+        url: String,
         mainViewModel: MainViewModel,
         isCheckLogin: Boolean,
     ) {
         // handle login
         LoginRequest(
-             "http://${loginUser.ip}:${loginUser.port}${activity.getString(R.string.login_url)}",
+            "http://${loginUser.ip}:${loginUser.port}${url}",
             loginUser, isCheckLogin,
-            activity,
+            singletonVolley,
             mainViewModel)
     }
 
-    fun getCaptcha(activity: Activity, mainViewModel: MainViewModel) {
+    fun getCaptcha(url: String, captchaImageUrl: String, mainViewModel: MainViewModel) {
         // val queue = SingletonVolley.getInstance(requireActivity().applicationContext).requestQueue
-        val getCaptcha = GetCaptcha()
-        getCaptcha {
-            url("http://${user.ip}:${user.port}${activity.getString(R.string.captcha_id_url)}")
-            activity(activity)
-            mainViewModel(mainViewModel)
-        }
+        GetCaptcha(
+            "http://${user.ip}:${user.port}${url}",
+            captchaImageUrl,
+            singletonVolley,
+            mainViewModel
+        )
     }
 
     fun getCaptchaImage(
         captchaId: String,
-        activity: Activity,
+        url: String,
         mainViewModel: MainViewModel,
     ) {
-        val url2 = "http://${user.ip}:${user.port}${
-            String.format(activity.getString(R.string.captcha_url),
-                captchaId)
-        }"
+        val url2 = "http://${user.ip}:${user.port}${String.format(url, captchaId)}"
         val captchaImageRequest = ImageRequest(url2, { bitmap ->
             mainViewModel.setCaptcha(mainViewModel.captcha.value!!.copy(bitmap = bitmap))
         }, 240, 80, Bitmap.Config.RGB_565, { error ->
             Log.e(name, error.toString())
         })
-        SingletonVolley.getInstance(activity).addToRequestQueue(captchaImageRequest)
+        singletonVolley.addToRequestQueue(captchaImageRequest)
     }
 
     fun setLoggedInUser(loggedInUser: User) {
@@ -106,76 +106,99 @@ class Repository {
     /**
      * 向服务器请求系统信息
      * **/
-    fun getSysInfo(activity: Activity, mainViewModel: MainViewModel) {
-        getBaseSysInfo(activity, mainViewModel)
-        getBaseHardwareInfo(activity, mainViewModel)
-        getBaseCpuInfo(activity, mainViewModel)
-        getMemInfo(activity, mainViewModel)
+    fun getSysInfo(urls: List<String>, mainViewModel: MainViewModel) {
+        getBaseSysInfo(urls[0], mainViewModel)
+        getBaseHardwareInfo(urls[1], mainViewModel)
+        getBaseCpuInfo(urls[2], mainViewModel)
+        getMemInfo(urls[3], mainViewModel)
     }
 
-    private fun getBaseSysInfo(activity: Activity, mainViewModel: MainViewModel) {
+    private fun getBaseSysInfo(url: String, mainViewModel: MainViewModel) {
         GetBaseSysInfo(
-            "http://${user.ip}:${user.port}${activity.getString(R.string.sys_info_url)}",
-            activity,
+            "http://${user.ip}:${user.port}${url}",
+            singletonVolley,
             mainViewModel)
     }
 
-    private fun getBaseHardwareInfo(activity: Activity, mainViewModel: MainViewModel) {
+    private fun getBaseHardwareInfo(url: String, mainViewModel: MainViewModel) {
         GetBaseHardwareInfo(
-            "http://${user.ip}:${user.port}${activity.getString(R.string.pc_info_url)}",
-            activity,
+            "http://${user.ip}:${user.port}${url}",
+            singletonVolley,
             mainViewModel)
     }
 
-    private fun getBaseCpuInfo(activity: Activity, mainViewModel: MainViewModel) {
+    private fun getBaseCpuInfo(url: String, mainViewModel: MainViewModel) {
         GetBaseCpuInfo(
-            "http://${user.ip}:${user.port}${activity.getString(R.string.cpu_info_url)}",
-            activity,
+            "http://${user.ip}:${user.port}${url}",
+            singletonVolley,
             mainViewModel)
     }
 
-    private fun getMemInfo(activity: Activity, mainViewModel: MainViewModel) {
+    private fun getMemInfo(url: String, mainViewModel: MainViewModel) {
         GetMemInfo(
-            "http://${user.ip}:${user.port}${activity.getString(R.string.mem_info_url)}",
-            activity,
+            "http://${user.ip}:${user.port}${url}",
+            singletonVolley,
             mainViewModel)
     }
 
     /**
      * 请求系统状态信息
      * **/
-    fun getUsageInfo(activity: Activity, mainViewModel: MainViewModel) {
-        getCpuUsageInfo(activity, mainViewModel)
-        getMemUsageInfo(activity, mainViewModel)
-        getDiskUsageInfo(activity, mainViewModel)
-        getNetUsageInfo(activity, mainViewModel)
+    fun getUsageInfo(urls: List<String>, mainViewModel: MainViewModel) {
+        getCpuUsageInfo(urls[0], mainViewModel)
+        getMemUsageInfo(urls[1], mainViewModel)
+        getDiskUsageInfo(urls[2], mainViewModel)
+        getNetUsageInfo(urls[3], mainViewModel)
     }
 
-    private fun getCpuUsageInfo(activity: Activity, mainViewModel: MainViewModel) {
+    private fun getCpuUsageInfo(url: String, mainViewModel: MainViewModel) {
         GetCpuUsageInfo(
-            "http://${user.ip}:${user.port}${activity.getString(R.string.cpu_usage_url)}",
-            activity,
+            "http://${user.ip}:${user.port}${url}",
+            singletonVolley,
             mainViewModel)
     }
 
-    private fun getMemUsageInfo(activity: Activity, mainViewModel: MainViewModel) {
+    private fun getMemUsageInfo(url: String, mainViewModel: MainViewModel) {
         GetMemUsageInfo(
-            "http://${user.ip}:${user.port}${activity.getString(R.string.mem_usage_url)}",
-            activity,
+            "http://${user.ip}:${user.port}${url}",
+            singletonVolley,
             mainViewModel)
     }
 
-    private fun getDiskUsageInfo(activity: Activity, mainViewModel: MainViewModel) {
+    private fun getDiskUsageInfo(url: String, mainViewModel: MainViewModel) {
         GetDiskUsageInfo(
-            "http://${user.ip}:${user.port}${activity.getString(R.string.disk_usage_url)}",
-            activity,
+            "http://${user.ip}:${user.port}${url}",
+            singletonVolley,
             mainViewModel)
     }
 
-    private fun getNetUsageInfo(activity: Activity, mainViewModel: MainViewModel) {
+    private fun getNetUsageInfo(url: String, mainViewModel: MainViewModel) {
         GetNetUsageInfo(
-            "http://${user.ip}:${user.port}${activity.getString(R.string.net_usage_url)}",
-            activity,
+            "http://${user.ip}:${user.port}${url}",
+            singletonVolley,
             mainViewModel)
+    }
+
+    /**
+     * 获取媒体库
+     * **/
+    fun getVideos(
+        url: String,
+        mainViewModel: MainViewModel,
+        mediaViewModel: MediaViewModel,
+    ) {
+        GetVideos(
+            "http://${user.ip}:${user.port}${url}",
+            singletonVolley,
+            mainViewModel,
+            mediaViewModel
+        )
+
+    }
+
+    /** 获取封面图 **/
+    fun getVideoThumbnail(url: String, networkImageView: NetworkImageView) {
+        networkImageView.setImageUrl("http://${user.ip}:${user.port}" + url + "2D0354D4-E474-44D0-B2F9-3BF3C6AC9357",
+            singletonVolley.imageLoader)
     }
 }

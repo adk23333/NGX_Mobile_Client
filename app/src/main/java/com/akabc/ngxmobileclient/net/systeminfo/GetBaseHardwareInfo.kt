@@ -1,17 +1,16 @@
 package com.akabc.ngxmobileclient.net.systeminfo
 
-import android.app.Activity
 import android.util.Log
 import com.akabc.ngxmobileclient.MainViewModel
 import com.akabc.ngxmobileclient.net.BaseRequest
+import com.akabc.ngxmobileclient.net.SingletonVolley
 
-class GetBaseHardwareInfo(val url: String, val activity: Activity, val mainViewModel: MainViewModel) : BaseRequest() {
+class GetBaseHardwareInfo(val url: String, val singletonVolley: SingletonVolley, val mainViewModel: MainViewModel) : BaseRequest() {
     override var tag: String = this.toString()
 
     operator fun invoke() {
-        super.request(url, activity, { response ->
+        super.request(url, singletonVolley, { response ->
             try {
-                Log.d(tag, response.toString())
                 val data = response.getJSONObject("Data")
                 val info = data.getJSONObject("info")
                 mainViewModel.sysBaseInfo(mainViewModel.sysBaseInfo.value!!.copy(

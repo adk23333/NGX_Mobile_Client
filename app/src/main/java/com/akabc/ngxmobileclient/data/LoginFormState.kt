@@ -1,4 +1,4 @@
-package com.akabc.ngxmobileclient.ui.login
+package com.akabc.ngxmobileclient.data
 
 
 /**

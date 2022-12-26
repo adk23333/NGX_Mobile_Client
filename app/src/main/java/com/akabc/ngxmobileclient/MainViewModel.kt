@@ -5,22 +5,28 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.akabc.ngxmobileclient.data.Fab
 import com.akabc.ngxmobileclient.net.Repository
-import com.akabc.ngxmobileclient.ui.dashboard.DiskUsageInfo
 import com.akabc.ngxmobileclient.ui.dashboard.SystemInfo
 import com.akabc.ngxmobileclient.ui.dashboard.UsageInfo
-import com.akabc.ngxmobileclient.ui.login.LoginFormState
-import com.akabc.ngxmobileclient.ui.login.LoginResult
-import com.akabc.ngxmobileclient.ui.login.data.Result
+import com.akabc.ngxmobileclient.data.LoginFormState
+import com.akabc.ngxmobileclient.data.LoginResult
+import com.akabc.ngxmobileclient.data.Result
 import com.akabc.ngxmobileclient.ui.login.data.model.Captcha
 import com.akabc.ngxmobileclient.ui.login.data.model.User
-import java.lang.Exception
 import java.util.regex.Pattern
 
 
 class MainViewModel(val repository: Repository) : ViewModel() {
-    private val name = this.toString()
+    private val tag = this.toString()
 
+    private val _fab = MutableLiveData<Fab>()
+    val fab:LiveData<Fab> = _fab.apply {
+        this.value = Fab(R.drawable.ic_user_24, 96)
+    }
+    fun setFab(icon: Int, size: Int){
+        _fab.value = Fab(icon, size)
+    }
 
     // Login Fragment
     private val _captcha = MutableLiveData<Captcha>()
@@ -36,11 +42,11 @@ class MainViewModel(val repository: Repository) : ViewModel() {
 
     fun login(
         loginUser: User,
-        activity: Activity,
+        url: String,
     ) {
         repository.login(
             loginUser,
-            activity,
+            url,
             this,
             false)
     }
@@ -72,7 +78,6 @@ class MainViewModel(val repository: Repository) : ViewModel() {
 
     fun setCaptcha(captcha: Captcha) {
         _captcha.value = captcha
-        Log.d(name, captcha.toString())
     }
 
     fun loginDataChanged(ip: String, port: String, username: String, password: String) {
@@ -102,7 +107,7 @@ class MainViewModel(val repository: Repository) : ViewModel() {
             val mPort = port.toInt()
             mPort in 0..65535
         } catch (e: Exception) {
-            Log.d(name, e.toString())
+            Log.d(tag, e.toString())
             false
         }
     }

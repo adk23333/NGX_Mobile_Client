@@ -1,4 +1,4 @@
-package com.akabc.ngxmobileclient.ui.login.data
+package com.akabc.ngxmobileclient.data
 
 import com.akabc.ngxmobileclient.net.FailMsg
 import java.lang.Exception
