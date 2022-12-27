@@ -8,6 +8,7 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.ImageLoader
 import com.android.volley.toolbox.Volley
 
+
 class SingletonVolley constructor(context: Context) {
     companion object {
         @Volatile
@@ -21,9 +22,9 @@ class SingletonVolley constructor(context: Context) {
     }
 
     val imageLoader: ImageLoader by lazy {
-        ImageLoader(requestQueue,
+        val imageLoader = ImageLoader(requestQueue,
             object : ImageLoader.ImageCache {
-                private val cache = LruCache<String, Bitmap>(20)
+                private val cache = LruCache<String, Bitmap>(1024 * 1024 * 20)
                 override fun getBitmap(url: String): Bitmap?  {
                     return cache.get(url)
                 }
@@ -32,7 +33,10 @@ class SingletonVolley constructor(context: Context) {
                     cache.put(url, bitmap)
                 }
             })
+
+        imageLoader
     }
+
 
     val requestQueue: RequestQueue by lazy {
         // applicationContext is key, it keeps you from leaking the

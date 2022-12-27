@@ -18,8 +18,8 @@ import com.akabc.ngxmobileclient.MainViewModel
 import com.akabc.ngxmobileclient.R
 import com.akabc.ngxmobileclient.databinding.FragmentLoginBinding
 import com.akabc.ngxmobileclient.net.FailMsg
-import com.akabc.ngxmobileclient.ui.login.data.model.Captcha
-import com.akabc.ngxmobileclient.ui.login.data.model.User
+import com.akabc.ngxmobileclient.data.Captcha
+import com.akabc.ngxmobileclient.data.User
 
 
 class LoginFragment : DialogFragment() {
@@ -64,7 +64,7 @@ class LoginFragment : DialogFragment() {
         mainViewModel.loginResult.value?.success?.let {
             ipEditText.setText(it.ip)
             portEditText.setText(it.port)
-            usernameEditText.setText(it.displayName)
+            usernameEditText.setText(it.Name)
             // passwordEditText.setText(it.pwd)
         }
 
@@ -166,7 +166,7 @@ class LoginFragment : DialogFragment() {
             mainViewModel.captcha.value?.ctId.let { it2 ->
                 loadingProgressBar.visibility = View.VISIBLE
                 val loginUser = User(
-                    displayName = usernameEditText.text.toString(),
+                    Name = usernameEditText.text.toString(),
                     pwd = passwordEditText.text.toString(),
                     captcha = Captcha(it2, captcha.text.toString()),
                     ip = ipEditText.text.toString(),
@@ -186,7 +186,7 @@ class LoginFragment : DialogFragment() {
     }
 
     private fun updateUiWithUser(model: User) {
-        val welcome = getString(R.string.welcome) + model.displayName
+        val welcome = getString(R.string.welcome) + model.Name
         val appContext = context?.applicationContext ?: return
         Toast.makeText(appContext, welcome, Toast.LENGTH_LONG).show()
     }

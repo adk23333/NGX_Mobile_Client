@@ -7,6 +7,7 @@ import com.akabc.ngxmobileclient.MainViewModel
 import com.akabc.ngxmobileclient.R
 import com.akabc.ngxmobileclient.net.login.GetCaptcha
 import com.akabc.ngxmobileclient.net.login.LoginRequest
+import com.akabc.ngxmobileclient.net.media.GetVideoCover
 import com.akabc.ngxmobileclient.net.media.GetVideos
 import com.akabc.ngxmobileclient.net.systeminfo.GetBaseCpuInfo
 import com.akabc.ngxmobileclient.net.systeminfo.GetBaseHardwareInfo
@@ -16,10 +17,9 @@ import com.akabc.ngxmobileclient.net.systemstatus.GetCpuUsageInfo
 import com.akabc.ngxmobileclient.net.systemstatus.GetDiskUsageInfo
 import com.akabc.ngxmobileclient.net.systemstatus.GetMemUsageInfo
 import com.akabc.ngxmobileclient.net.systemstatus.GetNetUsageInfo
-import com.akabc.ngxmobileclient.ui.login.data.model.User
+import com.akabc.ngxmobileclient.data.User
 import com.akabc.ngxmobileclient.ui.media.MediaViewModel
 import com.android.volley.toolbox.ImageRequest
-import com.android.volley.toolbox.NetworkImageView
 import java.time.Instant
 
 
@@ -197,8 +197,21 @@ class Repository(val singletonVolley: SingletonVolley) {
     }
 
     /** 获取封面图 **/
-    fun getVideoThumbnail(url: String, networkImageView: NetworkImageView) {
-        networkImageView.setImageUrl("http://${user.ip}:${user.port}" + url + "2D0354D4-E474-44D0-B2F9-3BF3C6AC9357",
-            singletonVolley.imageLoader)
+    fun getVideoThumbnail(url: String, position: Int, mediaViewModel: MediaViewModel) {
+        GetVideoCover(
+            "http://${user.ip}:${user.port}" + url + user.TID,
+            position,
+            singletonVolley,
+            mediaViewModel
+        )
+
     }
 }
+
+
+
+
+
+
+
+

@@ -3,6 +3,7 @@ package com.akabc.ngxmobileclient.net
 import android.util.Log
 import com.android.volley.Request.Method
 import com.android.volley.VolleyError
+import com.android.volley.toolbox.ImageLoader
 import com.android.volley.toolbox.JsonObjectRequest
 import org.json.JSONObject
 
@@ -49,5 +50,23 @@ abstract class BaseRequest {
             }
         }
         return param
+    }
+
+    fun request(
+        url: String,
+        requestQueue: SingletonVolley,
+        onSuccess: (ImageLoader.ImageContainer?, isImmediate: Boolean) -> Unit,
+        onError: (VolleyError) -> Unit,
+    ) {
+        requestQueue.imageLoader.get(url, object: ImageLoader.ImageListener {
+            override fun onErrorResponse(error: VolleyError?) {
+                error?.let { onError(it) }
+            }
+
+            override fun onResponse(response: ImageLoader.ImageContainer?, isImmediate: Boolean) {
+                onSuccess(response, isImmediate)
+            }
+
+        })
     }
 }

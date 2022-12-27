@@ -1,4 +1,4 @@
-package com.akabc.ngxmobileclient.ui.login.data.model
+package com.akabc.ngxmobileclient.data
 
 import android.graphics.Bitmap
 
@@ -6,8 +6,9 @@ import android.graphics.Bitmap
  * Data class that captures user information for logged in users retrieved from LoginRepository
  */
 data class User(
-    val userId: String = "",
-    val displayName: String = "",
+    val UID: String = "",
+    val Name: String = "",
+    val TID: String = "",
     var token: String? = null,
     val exceptionTime: Int = 1,
     val pwd: String = "",

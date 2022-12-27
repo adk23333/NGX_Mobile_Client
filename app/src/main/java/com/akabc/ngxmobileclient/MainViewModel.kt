@@ -12,8 +12,8 @@ import com.akabc.ngxmobileclient.ui.dashboard.UsageInfo
 import com.akabc.ngxmobileclient.data.LoginFormState
 import com.akabc.ngxmobileclient.data.LoginResult
 import com.akabc.ngxmobileclient.data.Result
-import com.akabc.ngxmobileclient.ui.login.data.model.Captcha
-import com.akabc.ngxmobileclient.ui.login.data.model.User
+import com.akabc.ngxmobileclient.data.Captcha
+import com.akabc.ngxmobileclient.data.User
 import java.util.regex.Pattern
 
 

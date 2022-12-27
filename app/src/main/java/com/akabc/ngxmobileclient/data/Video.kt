@@ -1,5 +1,8 @@
 package com.akabc.ngxmobileclient.data
 
+import android.graphics.Bitmap
+import org.jetbrains.annotations.Nullable
+
 data class Video(
     val Id: String,
     val Vid: String,
@@ -14,4 +17,5 @@ data class Video(
     val Ext: String,
     val Name: String,
     val Path: String,
+    val cover: Bitmap? = null
 )

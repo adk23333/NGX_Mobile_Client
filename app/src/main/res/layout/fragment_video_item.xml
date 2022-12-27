@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cv_video"
     android:layout_width="160dp"
-    android:layout_height="190dp"
+    android:layout_height="wrap_content"
     android:layout_margin="4dp"
     android:clickable="true"
     app:cardCornerRadius="5dp"
@@ -15,10 +15,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.android.volley.toolbox.NetworkImageView
+        <ImageView
             android:id="@+id/im_video"
             android:layout_width="match_parent"
-            android:layout_height="130dp"
+            android:layout_height="90dp"
             android:background="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,6 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
+            android:singleLine="true"
             android:text="video 1"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -40,6 +41,7 @@
             android:id="@+id/tv_video_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:text="2022.12.19 13:00"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="@+id/tv_video_title"
@@ -49,9 +51,12 @@
             android:id="@+id/tv_video_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:singleLine="true"
             android:text="1000MB"
             android:textAlignment="textStart"
             android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_video_title"
             app:layout_constraintTop_toBottomOf="@+id/tv_video_date" />
 

@@ -7,8 +7,8 @@ import com.akabc.ngxmobileclient.net.BaseRequest
 import com.akabc.ngxmobileclient.net.FailMsg
 import com.akabc.ngxmobileclient.net.MD5
 import com.akabc.ngxmobileclient.net.SingletonVolley
-import com.akabc.ngxmobileclient.ui.login.data.model.Captcha
-import com.akabc.ngxmobileclient.ui.login.data.model.User
+import com.akabc.ngxmobileclient.data.Captcha
+import com.akabc.ngxmobileclient.data.User
 import org.json.JSONObject
 
 class LoginRequest(
@@ -31,7 +31,7 @@ class LoginRequest(
             loginUser.pwd.MD5
         }
         body = toJSONObject(
-            "UserName" to loginUser.displayName,
+            "UserName" to loginUser.Name,
             "Password" to pwd,
             "CaptchaId" to loginUser.captcha.ctId,
             "CaptchaCode" to loginUser.captcha.ctCode,
@@ -40,6 +40,7 @@ class LoginRequest(
         super.request(url, singletonVolley, { response ->
             try {
                 val data = response.getJSONObject("Data")
+                val tid = data.getString("Id")
                 val token = data.getString("Token")
                 val userData = data.getJSONObject("UserData")
                 val uid = userData.getString("Id")
@@ -47,7 +48,8 @@ class LoginRequest(
 
                 val fakeUser =
                     User(uid,
-                        loginUser.displayName,
+                        loginUser.Name,
+                        tid,
                         token,
                         expirationTime,
                         pwd,

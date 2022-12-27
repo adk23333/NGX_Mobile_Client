@@ -17,8 +17,9 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.akabc.ngxmobileclient.databinding.ActivityMainBinding
 import com.akabc.ngxmobileclient.ui.login.LoginFragment
-import com.akabc.ngxmobileclient.ui.login.data.model.Captcha
-import com.akabc.ngxmobileclient.ui.login.data.model.User
+import com.akabc.ngxmobileclient.data.Captcha
+import com.akabc.ngxmobileclient.data.User
+import com.akabc.ngxmobileclient.ui.media.MediaViewModel
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -27,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     private val mainViewModel: MainViewModel by viewModels {
         ViewModelFactory((application as NewApplication).repository)
     }
+    private val mediaViewModel: MediaViewModel by viewModels()
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,8 +85,8 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.loginResult.observe(this) { loginResult ->
             loginResult.success?.let {
                 with(sharedPref.edit()) {
-                    putString("userId", it.userId)
-                    putString("displayName", it.displayName)
+                    putString("userId", it.UID)
+                    putString("displayName", it.Name)
                     putString("token", it.token)
                     putInt("exceptionTime", it.exceptionTime)
                     putString("pwd", it.pwd)
@@ -111,8 +113,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getUser(sharedPref: SharedPreferences) {
-        val keys = mutableListOf("userId",
-            "displayName",
+        val keys = mutableListOf("UID",
+            "Name",
+            "TID",
             "token",
             "exceptionTime",
             "pwd",
@@ -124,13 +127,14 @@ class MainActivity : AppCompatActivity() {
                 sharedPref.getString(keys[0], "").toString(),
                 sharedPref.getString(keys[1], "").toString(),
                 sharedPref.getString(keys[2], "").toString(),
-                sharedPref.getInt(keys[3], 0),
-                sharedPref.getString(keys[4], "").toString(),
+                sharedPref.getString(keys[3], "").toString(),
+                sharedPref.getInt(keys[4], 0),
+                sharedPref.getString(keys[5], "").toString(),
                 Captcha(
-                    sharedPref.getString(keys[5], "").toString(),
-                    sharedPref.getString(keys[6], "").toString()),
-                sharedPref.getString(keys[7],"").toString(),
+                    sharedPref.getString(keys[6], "").toString(),
+                    sharedPref.getString(keys[7], "").toString()),
                 sharedPref.getString(keys[8],"").toString(),
+                sharedPref.getString(keys[9],"").toString(),
             )
             mainViewModel.setLoginResultForRecord(this, user)
         } catch (e: Exception) {

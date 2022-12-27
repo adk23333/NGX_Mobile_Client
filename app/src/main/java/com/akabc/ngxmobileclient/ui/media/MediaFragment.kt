@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.akabc.ngxmobileclient.MainViewModel
 import com.akabc.ngxmobileclient.R
@@ -28,7 +27,7 @@ class MediaFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentMediaBinding.inflate(inflater, container, false)
-        val mediaViewModel = ViewModelProvider(this)[MediaViewModel::class.java]
+        val mediaViewModel: MediaViewModel by activityViewModels()
 
         val viewPager2 = binding.vpMedia
         val mediaTab = binding.mediaTab
