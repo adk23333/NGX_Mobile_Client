@@ -87,6 +87,7 @@ class MainActivity : AppCompatActivity() {
                 with(sharedPref.edit()) {
                     putString("userId", it.UID)
                     putString("displayName", it.Name)
+                    putString("TID", it.TID)
                     putString("token", it.token)
                     putInt("exceptionTime", it.exceptionTime)
                     putString("pwd", it.pwd)

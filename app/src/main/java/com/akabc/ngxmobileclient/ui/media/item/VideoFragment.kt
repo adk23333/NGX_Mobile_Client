@@ -78,6 +78,7 @@ class VideoFragment : Fragment() {
         RecyclerView.Adapter<VideoAdapter.ViewHolder>() {
         var dataSet: List<Video> = listOf()
         var itemWidth = 504
+        val screenAspectRatio = 9.0 / 16.0
 
         class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val tvVideoTitle: TextView
@@ -106,14 +107,17 @@ class VideoFragment : Fragment() {
             holder.tvVideoDate.text = (video.Atim.toString().substring(0, 10)
                 .toLong() * 1000) dateFormat "yyyy-MM-dd hh:mm"
             holder.tvVideoSize.text = video.Size.memDataFormat
-            video.cover?.let { holder.imVideo.setImageBitmap(it) }
 
-            holder.imVideo.layoutParams.height = itemWidth * 3 / 4
+            holder.imVideo.layoutParams.height = (itemWidth * screenAspectRatio).toInt()
 
             val lastUrl = "?Src=${video.Path.replace("/", "%2F")}/${
                 video.Name.replace(".", "%2E")
-            }&Tick=-1&Width=${itemWidth}&Height=${itemWidth * 3 / 4}&Authorization="
-            repository.getVideoThumbnail(url + lastUrl, position, mediaViewModel)
+            }&Tick=-1&Width=${itemWidth}&Height=${(itemWidth * screenAspectRatio).toInt()}&Authorization="
+            if (video.cover != null) {
+                holder.imVideo.setImageBitmap(video.cover)
+            } else {
+                repository.getVideoThumbnail(url + lastUrl, position, mediaViewModel)
+            }
         }
 
         override fun getItemCount() = dataSet.size
