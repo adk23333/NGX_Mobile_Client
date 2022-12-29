@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -47,6 +48,9 @@ class VideoFragment : Fragment() {
         val adapter = VideoAdapter(getString(R.string.video_thumbnail_url),
             mediaViewModel,
             mainViewModel.repository)
+        val videoPreviewAndProjectionFragment by lazy {
+            VideoPreviewAndProjectionFragment()
+        }
 
         adapter.itemWidth =
             (resources.displayMetrics.widthPixels / 2 - TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
@@ -62,6 +66,13 @@ class VideoFragment : Fragment() {
             } else {
                 adapter.notifyDataSetChanged()
             }
+        }
+
+        adapter.setOnItemClickListener { video, itemView, position ->
+            videoPreviewAndProjectionFragment.setOnPreviewListener { exoPlayer, fragment ->
+                mainViewModel.repository.getVideo(exoPlayer, video, fragment)
+            }
+            videoPreviewAndProjectionFragment.show(parentFragmentManager, "vpapFragment")
         }
     }
 
@@ -80,13 +91,21 @@ class VideoFragment : Fragment() {
         var itemWidth = 504
         val screenAspectRatio = 9.0 / 16.0
 
+        private lateinit var onItemViewClick: (video: Video, itemView: View, position: Int) -> Unit
+
+        fun setOnItemClickListener(func: (video: Video, itemView: View, position: Int) -> Unit){
+            onItemViewClick = func
+        }
+
         class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+            val cvVideo: CardView
             val tvVideoTitle: TextView
             val tvVideoDate: TextView
             val tvVideoSize: TextView
             val imVideo: ImageView
 
             init {
+                cvVideo = view.findViewById(R.id.cv_video)
                 tvVideoTitle = view.findViewById(R.id.tv_video_title)
                 tvVideoDate = view.findViewById(R.id.tv_video_date)
                 tvVideoSize = view.findViewById(R.id.tv_video_size)
@@ -117,6 +136,10 @@ class VideoFragment : Fragment() {
                 holder.imVideo.setImageBitmap(video.cover)
             } else {
                 repository.getVideoThumbnail(url + lastUrl, position, mediaViewModel)
+            }
+
+            holder.cvVideo.setOnClickListener {
+                onItemViewClick.invoke(video, it, position)
             }
         }
 

@@ -22,6 +22,7 @@
     <string name="net_usage_url" translatable="false">/api/v1/cloud/app/hardware/network/usage</string>
     <string name="media_url" translatable="false">/api/v1/cloud/app/media/library/query</string>
     <string name="video_thumbnail_url" translatable="false">/api/v1/cloud/app/browser/thumbnail</string>
+    <string name="video_download_url" translatable="false">/api/v1/cloud/app/browser/download?Src=//%1$s/%2$s&amp;Force=%3$s&amp;Authorization=%4$s</string>
 
     <!-- Navigation -->
     <string name="menu_media">Media</string>

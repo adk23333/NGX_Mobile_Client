@@ -2,9 +2,13 @@ package com.akabc.ngxmobileclient.net
 
 import android.app.Activity
 import android.graphics.Bitmap
+import android.net.Uri
 import android.util.Log
+import androidx.fragment.app.Fragment
 import com.akabc.ngxmobileclient.MainViewModel
 import com.akabc.ngxmobileclient.R
+import com.akabc.ngxmobileclient.data.User
+import com.akabc.ngxmobileclient.data.Video
 import com.akabc.ngxmobileclient.net.login.GetCaptcha
 import com.akabc.ngxmobileclient.net.login.LoginRequest
 import com.akabc.ngxmobileclient.net.media.GetVideoCover
@@ -17,9 +21,10 @@ import com.akabc.ngxmobileclient.net.systemstatus.GetCpuUsageInfo
 import com.akabc.ngxmobileclient.net.systemstatus.GetDiskUsageInfo
 import com.akabc.ngxmobileclient.net.systemstatus.GetMemUsageInfo
 import com.akabc.ngxmobileclient.net.systemstatus.GetNetUsageInfo
-import com.akabc.ngxmobileclient.data.User
 import com.akabc.ngxmobileclient.ui.media.MediaViewModel
 import com.android.volley.toolbox.ImageRequest
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
 import java.time.Instant
 
 
@@ -204,8 +209,19 @@ class Repository(val singletonVolley: SingletonVolley) {
             singletonVolley,
             mediaViewModel
         )
-
     }
+
+    fun getVideo(exoPlayer: ExoPlayer, video: Video, fragment: Fragment) {
+        val mediaItem = MediaItem.fromUri(Uri.parse("http://${user.ip}:${user.port}${
+            String.format(fragment.getString(R.string.video_download_url),
+                video.Path,video.Name,
+                true.toString(),
+                user.TID)
+        }"))
+        exoPlayer.setMediaItem(mediaItem)
+    }
+
+
 }
 
 

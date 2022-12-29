@@ -10,4 +10,7 @@
     <dimen name="fragment_vertical_margin">16dp</dimen>
 
     <dimen name="fab_corner">32dp</dimen>
+    <dimen name="small_corner">2dp</dimen>
+    <dimen name="list_item_spacing">16dp</dimen>
+    <dimen name="list_item_spacing_half">8dp</dimen>
 </resources>

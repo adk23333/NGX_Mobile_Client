@@ -60,6 +60,16 @@
             app:layout_constraintStart_toStartOf="@+id/tv_video_title"
             app:layout_constraintTop_toBottomOf="@+id/tv_video_date" />
 
+        <Button
+            android:id="@+id/button"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:background="@drawable/ic_item_menu"
+            android:clickable="true"
+            app:cornerRadius="@dimen/small_corner"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>
