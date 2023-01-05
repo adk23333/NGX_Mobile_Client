@@ -22,17 +22,15 @@ class GetCpuUsageInfo(val url: String, val singletonVolley: SingletonVolley, val
                 val data = response.getJSONArray("Data")
                 val cpUsage = mutableListOf<Double>()
                 for (i in 0 until data.length()) {
-                    Log.d(tag + object {}.javaClass.enclosingMethod?.name,
-                        data.getDouble(i).toString())
                     cpUsage.add(data.getDouble(i))
                 }
                 mainViewModel.usageInfo(mainViewModel.usageInfo.value!!.copy(cpUsageInfo = cpUsage))
             } catch (e: Exception) {
-                Log.w(tag + object {}.javaClass.enclosingMethod?.name, e.toString())
+                Log.w(tag, e.toString())
             }
         },
             { error ->
-                Log.d(tag + object {}.javaClass.enclosingMethod?.name, error.toString())
+                Log.d(tag, error.toString())
             }
         ) {
             mainViewModel.loginResult.value?.success?.let {

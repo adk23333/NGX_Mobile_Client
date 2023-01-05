@@ -1,5 +1,7 @@
 package com.akabc.ngxmobileclient.net
 
+import org.json.JSONArray
+import org.json.JSONObject
 import java.security.MessageDigest
 import java.text.SimpleDateFormat
 
@@ -60,6 +62,21 @@ infix fun Array<Any?>.formatBy(pattern: String) = String.format(pattern, *this)
 
 infix fun String.v(temp: Any?): Array<Any?> = arrayOf(this, temp)
 infix fun Number.v(temp: Any?): Array<Any?> = arrayOf(this, temp)
+
+/** 获取文件名称 */
+val String.filename: String
+    get() = this.split(".").first()
+
+/** 获取文件类型 */
+val String.filetype: String
+    get() = this.split(".").last()
+
+/** 遍历JSONArray **/
+fun JSONArray.forEach(func:(JSONObject) -> Unit) {
+    for (i in 0 until this.length()){
+        func(this.getJSONObject(i))
+    }
+}
 
 
 

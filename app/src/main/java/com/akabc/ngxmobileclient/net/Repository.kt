@@ -11,8 +11,7 @@ import com.akabc.ngxmobileclient.data.User
 import com.akabc.ngxmobileclient.data.Video
 import com.akabc.ngxmobileclient.net.login.GetCaptcha
 import com.akabc.ngxmobileclient.net.login.LoginRequest
-import com.akabc.ngxmobileclient.net.media.GetVideoCover
-import com.akabc.ngxmobileclient.net.media.GetVideos
+import com.akabc.ngxmobileclient.net.media.*
 import com.akabc.ngxmobileclient.net.systeminfo.GetBaseCpuInfo
 import com.akabc.ngxmobileclient.net.systeminfo.GetBaseHardwareInfo
 import com.akabc.ngxmobileclient.net.systeminfo.GetBaseSysInfo
@@ -211,16 +210,69 @@ class Repository(val singletonVolley: SingletonVolley) {
         )
     }
 
+    /**
+     * 获取视频地址及播放资源
+     */
     fun getVideo(exoPlayer: ExoPlayer, video: Video, fragment: Fragment) {
         val mediaItem = MediaItem.fromUri(Uri.parse("http://${user.ip}:${user.port}${
             String.format(fragment.getString(R.string.video_download_url),
-                video.Path,video.Name,
+                video.Path, video.Name,
                 true.toString(),
                 user.TID)
         }"))
         exoPlayer.setMediaItem(mediaItem)
     }
 
+    /**
+     *  获取视频详情
+     */
+    fun getVideoDetails(
+        path: String,
+        fragment: Fragment,
+        position: Int,
+        mainViewModel: MainViewModel,
+        mediaViewModel: MediaViewModel,
+    ) {
+        GetMediaDetails(
+            "http://${user.ip}:${user.port}${fragment.getString(R.string.media_details_url)}",
+            path,
+            position,
+            singletonVolley,
+            mainViewModel,
+            mediaViewModel
+        )
+    }
+
+    /**
+     *  获取DLNA投屏设备列表
+     */
+
+    fun getDlnaDevices(
+        fragment: Fragment,
+        mainViewModel: MainViewModel,
+        mediaViewModel: MediaViewModel,
+    ) {
+        GetDlnaDevices(
+            "http://${user.ip}:${user.port}${fragment.getString(R.string.media_find_dlna_url)}",
+            singletonVolley,
+            mainViewModel, mediaViewModel
+        )
+    }
+
+    /**
+     *  设置DLNA投屏设备
+     */
+    fun setScreenProjection(
+        fragment: Fragment,
+        path: String,
+        renderId: String,
+        mainViewModel: MainViewModel,
+    ) {
+        SetScreenProjection(
+            "http://${user.ip}:${user.port}${fragment.getString(R.string.media_set_dlna_url)}",
+            path, renderId, singletonVolley, mainViewModel
+        )
+    }
 
 }
 

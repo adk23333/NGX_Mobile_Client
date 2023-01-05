@@ -23,6 +23,9 @@
     <string name="media_url" translatable="false">/api/v1/cloud/app/media/library/query</string>
     <string name="video_thumbnail_url" translatable="false">/api/v1/cloud/app/browser/thumbnail</string>
     <string name="video_download_url" translatable="false">/api/v1/cloud/app/browser/download?Src=//%1$s/%2$s&amp;Force=%3$s&amp;Authorization=%4$s</string>
+    <string name="media_details_url" translatable="false">/api/v1/cloud/app/media/library/detail</string>
+    <string name="media_find_dlna_url" translatable="false">/api/v1/cloud/app/dlna/render/query</string>
+    <string name="media_set_dlna_url" translatable="false">/api/v1/cloud/app/dlna/render/cast</string>
 
     <!-- Navigation -->
     <string name="menu_media">Media</string>
@@ -55,4 +58,24 @@
     <string name="media_tab_music">music</string>
     <string name="media_tab_file">file</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tv_details_title">Filename: </string>
+    <string name="tv_details_addr">Path: </string>
+    <string name="tv_details_format">Format: </string>
+    <string name="tv_details_duration">Duration: </string>
+    <string name="tv_details_size">Size: </string>
+    <string name="tv_details_create">CreationTime: </string>
+    <string name="tv_details_videoformat">Video: </string>
+    <string name="tv_details_audioformat">Audio: </string>
+    <string name="tv_dlna_name">Name: </string>
+    <string name="tv_dlna_host">Host: </string>
+    <string name="btn_video_details_determine">Search</string>
+
+    <string-array name="spinner">
+        <item>Device one max pro</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </string-array>
 </resources>

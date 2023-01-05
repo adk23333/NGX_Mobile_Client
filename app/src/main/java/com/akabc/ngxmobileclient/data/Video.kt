@@ -17,5 +17,6 @@ data class Video(
     val Ext: String,
     val Name: String,
     val Path: String,
-    val cover: Bitmap? = null
+    val cover: Bitmap? = null,
+    val details: VideoDetails? = null,
 )
